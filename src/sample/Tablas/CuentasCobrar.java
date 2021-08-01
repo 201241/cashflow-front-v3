@@ -7,14 +7,16 @@ public class CuentasCobrar {
     private String semana2;
     private String semana3;
     private String semana4;
+    private String semana5;
     private String Final;
 
-    public CuentasCobrar(String nombre, String semana1, String semana2, String semana3, String semana4, String Final) {
+    public CuentasCobrar(String nombre, String semana1, String semana2, String semana3, String semana4, String semana5, String Final) {
         this.nombre = nombre;
         this.semana1 = semana1;
         this.semana2 = semana2;
         this.semana3 = semana3;
         this.semana4 = semana4;
+        this.semana5 = semana5;
         this.Final = Final;
     }
 
@@ -67,5 +69,13 @@ public class CuentasCobrar {
 
     public void setFinal(String aFinal) {
         Final = aFinal;
+    }
+
+    public String getSemana5() {
+        return semana5;
+    }
+
+    public void setSemana5(String semana5) {
+        this.semana5 = semana5;
     }
 }

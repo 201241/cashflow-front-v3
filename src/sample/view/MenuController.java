@@ -314,6 +314,8 @@ public class MenuController {
 
     @FXML private TableColumn colFinal;
 
+    @FXML private TableColumn finalCobrar;
+
     @FXML private TableView<CuentasCobrar> tablaCuentaPagar;
 
     @FXML private TableColumn colNombreP;
@@ -327,6 +329,8 @@ public class MenuController {
     @FXML private TableColumn sem4P;
 
     @FXML private TableColumn colFinalP;
+
+    @FXML private TableColumn finalPagar;
 
     @FXML private TableView<CuentasCobrar> tablaCuentaIngreso;
 
@@ -342,6 +346,8 @@ public class MenuController {
 
     @FXML private TableColumn colFinalI;
 
+    @FXML private TableColumn finalIngresos;
+
     @FXML private TableView<Semana> tablaCuentaGastos;
 
     @FXML private TableColumn colNombreG;
@@ -356,6 +362,8 @@ public class MenuController {
 
     @FXML private TableColumn colFinalG;
 
+    @FXML private TableColumn finalGastos;
+
     @FXML private TableView<CuentasCobrar> tablaCuentaBancos;
 
     @FXML private TableColumn colNombreB;
@@ -369,6 +377,8 @@ public class MenuController {
     @FXML private TableColumn sem4B;
 
     @FXML private TableColumn colFinalB;
+
+    @FXML private TableColumn finalBanco;
 
     private ObservableList<CuentasCobrar> cuentasCobrar;
 
@@ -402,7 +412,8 @@ public class MenuController {
             this.sem2.setCellValueFactory(new PropertyValueFactory("semana2"));
             this.sem3.setCellValueFactory(new PropertyValueFactory("semana3"));
             this.sem4.setCellValueFactory(new PropertyValueFactory("semana4"));
-            this.colFinal.setCellValueFactory(new PropertyValueFactory("Final"));
+            this.colFinal.setCellValueFactory(new PropertyValueFactory("semana5"));
+            this.finalCobrar.setCellValueFactory(new PropertyValueFactory("Final"));
 
             cuentasPagar = FXCollections.observableArrayList();
             llenaDatosCeuntasPorPagar();
@@ -411,7 +422,8 @@ public class MenuController {
             this.sem2P.setCellValueFactory(new PropertyValueFactory("semana2"));
             this.sem3P.setCellValueFactory(new PropertyValueFactory("semana3"));
             this.sem4P.setCellValueFactory(new PropertyValueFactory("semana4"));
-            this.colFinalP.setCellValueFactory(new PropertyValueFactory("Final"));
+            this.colFinalP.setCellValueFactory(new PropertyValueFactory("semana5"));
+            this.finalPagar.setCellValueFactory(new PropertyValueFactory("Final"));
 
             cuentasIngresos = FXCollections.observableArrayList();
             llenaDatosIngresos(listaReporte, mes);
@@ -420,7 +432,8 @@ public class MenuController {
             this.sem2I.setCellValueFactory(new PropertyValueFactory("semana2"));
             this.sem3I.setCellValueFactory(new PropertyValueFactory("semana3"));
             this.sem4I.setCellValueFactory(new PropertyValueFactory("semana4"));
-            this.colFinalI.setCellValueFactory(new PropertyValueFactory("Final"));
+            this.colFinalI.setCellValueFactory(new PropertyValueFactory("semana5"));
+            this.finalIngresos.setCellValueFactory(new PropertyValueFactory("Final"));
 
             cuentasGastos = FXCollections.observableArrayList();
             llenaDatosGastos();
@@ -429,7 +442,8 @@ public class MenuController {
             this.sem2G.setCellValueFactory(new PropertyValueFactory("semana2"));
             this.sem3G.setCellValueFactory(new PropertyValueFactory("semana3"));
             this.sem4G.setCellValueFactory(new PropertyValueFactory("semana4"));
-            this.colFinalG.setCellValueFactory(new PropertyValueFactory("Final"));
+            this.colFinalG.setCellValueFactory(new PropertyValueFactory("semana5"));
+            this.finalGastos.setCellValueFactory(new PropertyValueFactory("Final"));
 
             cuentasBancos = FXCollections.observableArrayList();
             llenaDatosBancos();
@@ -438,7 +452,8 @@ public class MenuController {
             this.sem2B.setCellValueFactory(new PropertyValueFactory("semana2"));
             this.sem3B.setCellValueFactory(new PropertyValueFactory("semana3"));
             this.sem4B.setCellValueFactory(new PropertyValueFactory("semana4"));
-            this.colFinalB.setCellValueFactory(new PropertyValueFactory("Final"));
+            this.colFinalB.setCellValueFactory(new PropertyValueFactory("semana5"));
+            this.finalBanco.setCellValueFactory(new PropertyValueFactory("Final"));
 
         } else {
             Alert advertencia = new Alert(Alert.AlertType.WARNING);
@@ -451,7 +466,7 @@ public class MenuController {
 
     public void llenaDatosCeuntasPorCobrar(){
         for(int i=0; i<5; i++){
-            CuentasCobrar cuentasC = new CuentasCobrar("venta "+i,"9000","3500","0","1200","1200");
+            CuentasCobrar cuentasC = new CuentasCobrar("venta "+i,"9000","3500","0","1200","1200", "1200");
             cuentasCobrar.add(cuentasC);
             tablaCuentaCobrar.setItems(cuentasCobrar);
         }
@@ -459,7 +474,7 @@ public class MenuController {
 
     public void llenaDatosCeuntasPorPagar(){
         for(int i=0; i<5; i++){
-            CuentasCobrar cuentasP = new CuentasCobrar("Prestamo "+i,"9000","3500","0","1200","1200");
+            CuentasCobrar cuentasP = new CuentasCobrar("Prestamo "+i,"9000","3500","0","1200","1200", "1200");
             cuentasPagar.add(cuentasP);
             tablaCuentaPagar.setItems(cuentasPagar);
         }
@@ -513,13 +528,13 @@ public class MenuController {
                     }
                     if(!aux2){
                         System.out.println("Hola: " + aux2);
-                        CuentasCobrar cuentasI = new CuentasCobrar(nameAux, sema1, sema2, sema3, sema4, sema5);
+                        CuentasCobrar cuentasI = new CuentasCobrar(nameAux, sema1, sema2, sema3, sema4, sema5, sema5);
                         cuentasIngresos.add(cuentasI);
                         tablaCuentaIngreso.setItems(cuentasIngresos);
                         auxList.add(nameAux);
                     }
                 } else {
-                    CuentasCobrar cuentasI = new CuentasCobrar("Total: ", String.valueOf(monto1),  String.valueOf(monto2),  String.valueOf(monto3),  String.valueOf(monto4),  String.valueOf(monto5));
+                    CuentasCobrar cuentasI = new CuentasCobrar("Total: ", String.valueOf(monto1),  String.valueOf(monto2),  String.valueOf(monto3),  String.valueOf(monto4),  String.valueOf(monto5), String.valueOf(monto5));
                     cuentasIngresos.add(cuentasI);
                     tablaCuentaIngreso.setItems(cuentasIngresos);
                     System.out.println("ultima fila");
@@ -528,7 +543,7 @@ public class MenuController {
         } else {
             Alert advertencia = new Alert(Alert.AlertType.WARNING);
             advertencia.setTitle("Sin registros");
-            advertencia.setHeaderText("No hay registros del mes de: " + mes);
+            advertencia.setHeaderText("No hay registros de flujo de entradas");
             advertencia.show();
         }
 
@@ -536,7 +551,7 @@ public class MenuController {
 
     public void llenaDatosGastos(){
         for(int i=0; i<5; i++){
-            CuentasCobrar cuentasG = new CuentasCobrar("Operativos "+i,"9000","3500","0","1200","1200");
+            CuentasCobrar cuentasG = new CuentasCobrar("Operativos "+i,"9000","3500","0","1200","1200", "1200");
             cuentasGastos.add(cuentasG);
             //tablaCuentaGastos.setItems(cuentasGastos);
         }
@@ -544,7 +559,7 @@ public class MenuController {
 
     public void llenaDatosBancos(){
         for(int i=0; i<5; i++){
-            CuentasCobrar cuentasB = new CuentasCobrar("Banco "+i,"9000","3500","0","1200","1200");
+            CuentasCobrar cuentasB = new CuentasCobrar("Banco "+i,"9000","3500","0","1200","1200", "1200");
             cuentasBancos.add(cuentasB);
             tablaCuentaBancos.setItems(cuentasBancos);
         }
