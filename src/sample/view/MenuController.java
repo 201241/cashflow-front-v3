@@ -384,53 +384,68 @@ public class MenuController {
     public void llenarTabla(){
         System.out.println(comboMeses.getSelectionModel(). getSelectedItem());
         Conexion conexion = new Conexion();
+        Boolean axu = false;
         ObservableList <Semana> listaReporte = conexion.generarPdf();
         String mes = comboMeses.getSelectionModel(). getSelectedItem();
 
-        cuentasCobrar = FXCollections.observableArrayList();
-        llenaDatosCeuntasPorCobrar();
-        this.colNombre.setCellValueFactory(new PropertyValueFactory("nombre"));
-        this.sem1.setCellValueFactory(new PropertyValueFactory("semana1"));
-        this.sem2.setCellValueFactory(new PropertyValueFactory("semana2"));
-        this.sem3.setCellValueFactory(new PropertyValueFactory("semana3"));
-        this.sem4.setCellValueFactory(new PropertyValueFactory("semana4"));
-        this.colFinal.setCellValueFactory(new PropertyValueFactory("Final"));
+        for (int i=0; i<listaReporte.size(); i++){
+            if(listaReporte.get(i).getMes().equals(mes)) {
+                axu = true;
+            }
+        }
 
-        cuentasPagar = FXCollections.observableArrayList();
-        llenaDatosCeuntasPorPagar();
-        this.colNombreP.setCellValueFactory(new PropertyValueFactory("nombre"));
-        this.sem1P.setCellValueFactory(new PropertyValueFactory("semana1"));
-        this.sem2P.setCellValueFactory(new PropertyValueFactory("semana2"));
-        this.sem3P.setCellValueFactory(new PropertyValueFactory("semana3"));
-        this.sem4P.setCellValueFactory(new PropertyValueFactory("semana4"));
-        this.colFinalP.setCellValueFactory(new PropertyValueFactory("Final"));
+        if (axu){
+            cuentasCobrar = FXCollections.observableArrayList();
+            llenaDatosCeuntasPorCobrar();
+            this.colNombre.setCellValueFactory(new PropertyValueFactory("nombre"));
+            this.sem1.setCellValueFactory(new PropertyValueFactory("semana1"));
+            this.sem2.setCellValueFactory(new PropertyValueFactory("semana2"));
+            this.sem3.setCellValueFactory(new PropertyValueFactory("semana3"));
+            this.sem4.setCellValueFactory(new PropertyValueFactory("semana4"));
+            this.colFinal.setCellValueFactory(new PropertyValueFactory("Final"));
 
-        cuentasIngresos = FXCollections.observableArrayList();
-        llenaDatosIngresos(listaReporte, mes);
-        this.colNombreI.setCellValueFactory(new PropertyValueFactory("nombre"));
-        this.sem1I.setCellValueFactory(new PropertyValueFactory("semana1"));
-        this.sem2I.setCellValueFactory(new PropertyValueFactory("semana2"));
-        this.sem3I.setCellValueFactory(new PropertyValueFactory("semana3"));
-        this.sem4I.setCellValueFactory(new PropertyValueFactory("semana4"));
-        this.colFinalI.setCellValueFactory(new PropertyValueFactory("Final"));
+            cuentasPagar = FXCollections.observableArrayList();
+            llenaDatosCeuntasPorPagar();
+            this.colNombreP.setCellValueFactory(new PropertyValueFactory("nombre"));
+            this.sem1P.setCellValueFactory(new PropertyValueFactory("semana1"));
+            this.sem2P.setCellValueFactory(new PropertyValueFactory("semana2"));
+            this.sem3P.setCellValueFactory(new PropertyValueFactory("semana3"));
+            this.sem4P.setCellValueFactory(new PropertyValueFactory("semana4"));
+            this.colFinalP.setCellValueFactory(new PropertyValueFactory("Final"));
 
-        cuentasGastos = FXCollections.observableArrayList();
-        llenaDatosGastos();
-        this.colNombreG.setCellValueFactory(new PropertyValueFactory("nombre"));
-        this.sem1G.setCellValueFactory(new PropertyValueFactory("semana1"));
-        this.sem2G.setCellValueFactory(new PropertyValueFactory("semana2"));
-        this.sem3G.setCellValueFactory(new PropertyValueFactory("semana3"));
-        this.sem4G.setCellValueFactory(new PropertyValueFactory("semana4"));
-        this.colFinalG.setCellValueFactory(new PropertyValueFactory("Final"));
+            cuentasIngresos = FXCollections.observableArrayList();
+            llenaDatosIngresos(listaReporte, mes);
+            this.colNombreI.setCellValueFactory(new PropertyValueFactory("nombre"));
+            this.sem1I.setCellValueFactory(new PropertyValueFactory("semana1"));
+            this.sem2I.setCellValueFactory(new PropertyValueFactory("semana2"));
+            this.sem3I.setCellValueFactory(new PropertyValueFactory("semana3"));
+            this.sem4I.setCellValueFactory(new PropertyValueFactory("semana4"));
+            this.colFinalI.setCellValueFactory(new PropertyValueFactory("Final"));
 
-        cuentasBancos = FXCollections.observableArrayList();
-        llenaDatosBancos();
-        this.colNombreB.setCellValueFactory(new PropertyValueFactory("nombre"));
-        this.sem1B.setCellValueFactory(new PropertyValueFactory("semana1"));
-        this.sem2B.setCellValueFactory(new PropertyValueFactory("semana2"));
-        this.sem3B.setCellValueFactory(new PropertyValueFactory("semana3"));
-        this.sem4B.setCellValueFactory(new PropertyValueFactory("semana4"));
-        this.colFinalB.setCellValueFactory(new PropertyValueFactory("Final"));
+            cuentasGastos = FXCollections.observableArrayList();
+            llenaDatosGastos();
+            this.colNombreG.setCellValueFactory(new PropertyValueFactory("nombre"));
+            this.sem1G.setCellValueFactory(new PropertyValueFactory("semana1"));
+            this.sem2G.setCellValueFactory(new PropertyValueFactory("semana2"));
+            this.sem3G.setCellValueFactory(new PropertyValueFactory("semana3"));
+            this.sem4G.setCellValueFactory(new PropertyValueFactory("semana4"));
+            this.colFinalG.setCellValueFactory(new PropertyValueFactory("Final"));
+
+            cuentasBancos = FXCollections.observableArrayList();
+            llenaDatosBancos();
+            this.colNombreB.setCellValueFactory(new PropertyValueFactory("nombre"));
+            this.sem1B.setCellValueFactory(new PropertyValueFactory("semana1"));
+            this.sem2B.setCellValueFactory(new PropertyValueFactory("semana2"));
+            this.sem3B.setCellValueFactory(new PropertyValueFactory("semana3"));
+            this.sem4B.setCellValueFactory(new PropertyValueFactory("semana4"));
+            this.colFinalB.setCellValueFactory(new PropertyValueFactory("Final"));
+
+        } else {
+            Alert advertencia = new Alert(Alert.AlertType.WARNING);
+            advertencia.setTitle("Sin registros");
+            advertencia.setHeaderText("No hay registros del mes de: " + mes);
+            advertencia.show();
+        }
 
     }
 
@@ -465,7 +480,7 @@ public class MenuController {
             Double monto1 = 0.0, monto2 =0.0, monto3 =0.0, monto4 =0.0, monto5 =0.0;
             ArrayList <String> auxList = new ArrayList<>();
             for (int i=0; i<= listaEntrada.size(); i++){
-                String sema1 = "", sema2 = "", sema3 = "", sema4 = "", sema5 = "", nameAux;
+                String sema1 = "0.0", sema2 = "0.0", sema3 = "0.0", sema4 = "0.0", sema5 = "0.0", nameAux;
                 int auxNum=0;
                 Boolean aux2 = false;
                 if( i< listaEntrada.size()){
