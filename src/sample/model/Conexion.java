@@ -36,7 +36,10 @@ public class Conexion {
                 response.append(linea);
             }
             bufferresponse.close();
-             jsonArray = new JSONArray(response.toString());
+            JSONObject jsonObject = new JSONObject(response.toString());
+             jsonArray = new JSONArray();
+             jsonArray.put(jsonObject);
+            System.out.println(jsonArray);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -51,18 +54,16 @@ public class Conexion {
         String enlace = _url+path;
 
         JSONArray jsonArray= conexionAPIGET(enlace);
-        for (int i = 0; i <jsonArray.length() ; i++) {
-            JSONObject jsonObject = jsonArray.getJSONObject(i);
-            if (jsonObject.getString("find").equals("true")){
-                for (int j = 0; j <jsonObject.getJSONArray("body").length() ; j++) {
-                        JSONObject jsonObject1 = jsonObject.getJSONArray("body").getJSONObject(i);
-                        String idcate = jsonObject1.getString("idCategoria");
-                        String clasificacion = jsonObject1.getString("clasificacion");
-                        String cate = jsonObject1.getString("categoria");
-                        String subCategoria = jsonObject1.getString("subCategoria");
-                        Categoria categoria = new Categoria(idcate,clasificacion,cate,subCategoria);
-                        itemsCategoria.add(categoria);
-                }
+        JSONObject jsonObject = jsonArray.getJSONObject(0);
+        if (jsonObject.getString("find").equals("true")){
+            for (int j = 0; j <jsonObject.getJSONArray("body").length() ; j++) {
+                JSONObject jsonObject1 = jsonObject.getJSONArray("body").getJSONObject(j);
+                String idcate = jsonObject1.getString("idCategoria");
+                String clasificacion = jsonObject1.getString("clasificacion");
+                String cate = jsonObject1.getString("categoria");
+                String subCategoria = jsonObject1.getString("subCategoria");
+                Categoria categoria = new Categoria(idcate,clasificacion,cate,subCategoria);
+                itemsCategoria.add(categoria);
             }
         }
 
@@ -75,24 +76,27 @@ public class Conexion {
         path = "flujoEfectivo/getAllFlujoEfectivo";
         String enlace = _url+path;
      JSONArray jsonArray = conexionAPIGET(enlace);
-        for (int i = 0; i < jsonArray.length() ; i++) {
+     JSONObject jsonObject1 = jsonArray.getJSONObject(0);
+     if(jsonObject1.getString("find").equals("true")){
+         for (int i = 0; i < jsonObject1.getJSONArray("body").length() ; i++) {
+             JSONObject jsonObject = jsonObject1.getJSONArray("body").getJSONObject(i);
+             System.out.println(jsonObject);
+             String id = jsonObject.getString("idFlujoEfectivo");
+             String fecha = jsonObject.getString("fecha");
+             String tipoFlujo = jsonObject.getString("tipo");
+             Double cantidad = jsonObject.getJSONObject("Semana").getDouble("monto");
+             String idcate = jsonObject.getJSONObject("categorium").getString("idCategoria");
+             String clasificacion = jsonObject.getJSONObject("categorium").getString("clasificacion");
+             String categoriaitem = jsonObject.getJSONObject("categorium").getString("categoria");
+             String subCategoria = jsonObject.getJSONObject("categorium").getString("subCategoria");
+             Integer nSemana = jsonObject.getJSONObject("Semana").getInt("numeroSemana");
+             String descripcion = jsonObject.getJSONObject("Semana").getString("descripcion");
+             Categoria categoria = new Categoria(idcate,clasificacion,categoriaitem,subCategoria);
+             FlujoEfectivo flujoEfectivo = new FlujoEfectivo(fecha,tipoFlujo,descripcion,cantidad,categoria,id,nSemana);
+             itemflujo.add(flujoEfectivo);
+         }
+     }
 
-            JSONObject jsonObject = jsonArray.getJSONObject(i);
-            System.out.println(jsonObject);
-            String id = jsonObject.getString("idFlujoEfectivo");
-            String fecha = jsonObject.getString("fecha");
-            String tipoFlujo = jsonObject.getString("tipoFlujo");
-            String descripcion = jsonObject.getString("descripcion");
-            Double cantidad = jsonObject.getDouble("cantidad");
-            String idcate = jsonObject.getJSONObject("categorium").getString("idCategoria");
-            String clasificacion = jsonObject.getJSONObject("categorium").getString("clasificacion");
-            String categoriaitem = jsonObject.getJSONObject("categorium").getString("categoria");
-            String subCategoria = jsonObject.getJSONObject("categorium").getString("subCategoria");
-            Integer nSemana = jsonObject.getInt("numeroSemana");
-            Categoria categoria = new Categoria(idcate,clasificacion,categoriaitem,subCategoria);
-            FlujoEfectivo flujoEfectivo = new FlujoEfectivo(fecha,tipoFlujo,descripcion,cantidad,categoria,id,nSemana);
-            itemflujo.add(flujoEfectivo);
-        }
         return itemflujo;
     }
 
