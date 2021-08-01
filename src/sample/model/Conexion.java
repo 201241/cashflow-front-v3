@@ -10,7 +10,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -101,9 +100,8 @@ public class Conexion {
         return itemflujo;
     }
 
-    public ObservableList<PDF> generarPdf(){
-        ObservableList<PDF> itemsemna = FXCollections.observableArrayList();
-
+    public ObservableList<Semana> generarPdf(){
+        ObservableList<Semana> itemsemna = FXCollections.observableArrayList();
         path="getSemanaPDF/getSemana";
         String enlace = _url+path;
         JSONArray jsonArray = conexionAPIGET(enlace);
@@ -111,19 +109,14 @@ public class Conexion {
         if (jsonObject1.getString("find").equals("true")){
             for (int i = 0; i < jsonObject1.getJSONArray("body").length() ; i++){
                 JSONObject jsonObject = jsonObject1.getJSONArray("body").getJSONObject(i);
-                String descripcionName = jsonObject.getString("descripcion");
-                ArrayList<Semanas> auxsemanas = new ArrayList<Semanas>();
-               for (int j = 0; j<jsonObject.getJSONArray("semanas").length(); j++){
-                    JSONObject jsonObject2 = jsonObject.getJSONArray("semanas").getJSONObject(j);
-                   Integer numeroSemana = jsonObject2.getInt("numeroSemana");
-                   Double monto = jsonObject2.getDouble("monto");
-                   String mes = jsonObject2.getString("mes");
-                   String tipo = jsonObject2.getString("tipo");
-                   Semanas sem = new Semanas(numeroSemana,monto,mes,tipo);
-                   auxsemanas.add(sem);
-                   PDF pdf = new PDF(descripcionName,auxsemanas);
-                   itemsemna.add(pdf);
-               }
+                String id = jsonObject.getString("id");
+                String descripcion = jsonObject.getString("descripcion");
+                Integer numeroSemana = jsonObject.getInt("numeroSemana");
+                Double monto = jsonObject.getDouble("monto");
+                String mes = jsonObject.getString("mes");
+                String tipo = jsonObject.getString("tipo");
+                Semana sem = new Semana(id,descripcion,numeroSemana,monto,mes,tipo);
+                itemsemna.add(sem);
             }
         }
 
