@@ -51,15 +51,19 @@ public class Conexion {
         String enlace = _url+path;
 
         JSONArray jsonArray= conexionAPIGET(enlace);
-
-        for (int i = 0; i < jsonArray.length() ; i++) {
+        for (int i = 0; i <jsonArray.length() ; i++) {
             JSONObject jsonObject = jsonArray.getJSONObject(i);
-            String id = jsonObject.getString("idCategoria");
-            String clasificacion=jsonObject.getString("clasificacion");
-            String _categoria = jsonObject.getString("categoria");
-            String subcategoria = jsonObject.getString("subCategoria");
-            Categoria categoria = new Categoria(id,clasificacion,_categoria,subcategoria);
-            itemsCategoria.add(categoria);
+            if (jsonObject.getString("find").equals("true")){
+                for (int j = 0; j <jsonObject.getJSONArray("body").length() ; j++) {
+                        JSONObject jsonObject1 = jsonObject.getJSONArray("body").getJSONObject(i);
+                        String idcate = jsonObject1.getString("idCategoria");
+                        String clasificacion = jsonObject1.getString("clasificacion");
+                        String cate = jsonObject1.getString("categoria");
+                        String subCategoria = jsonObject1.getString("subCategoria");
+                        Categoria categoria = new Categoria(idcate,clasificacion,cate,subCategoria);
+                        itemsCategoria.add(categoria);
+                }
+            }
         }
 
         return itemsCategoria;
