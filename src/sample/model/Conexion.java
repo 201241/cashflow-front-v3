@@ -100,7 +100,29 @@ public class Conexion {
         return itemflujo;
     }
 
+    public ObservableList<Semana> generarPdf(){
+        ObservableList<Semana> itemsemna = FXCollections.observableArrayList();
+        path="getSemanaPDF/getSemana";
+        String enlace = _url+path;
+        JSONArray jsonArray = conexionAPIGET(enlace);
+        JSONObject jsonObject1 = jsonArray.getJSONObject(0);
+        if (jsonObject1.getString("find").equals("true")){
+            for (int i = 0; i < jsonObject1.getJSONArray("body").length() ; i++){
+                JSONObject jsonObject = jsonObject1.getJSONArray("body").getJSONObject(i);
+                String idsemana = jsonObject.getString("id");
+                String descripcion = jsonObject.getString("descripcion");
+                Integer numeroSemana = jsonObject.getInt("numeroSemana");
+                Double monto = jsonObject.getDouble("monto");
+                String mes = jsonObject.getString("mes");
+                String tipo = jsonObject.getString("tipo");
+                Semana semana = new Semana(idsemana,descripcion,numeroSemana,monto,mes,tipo);
+                itemsemna.add(semana);
+            }
+        }
 
+        return itemsemna;
+
+    }
 
     public String postCategoria(String clasificacion, String categoria, String subcategoria)  {
         path = "categoria/categoriaAdd";
