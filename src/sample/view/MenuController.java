@@ -13,10 +13,7 @@ import javafx.scene.shape.Polygon;
 import javafx.util.Duration;
 import javafx.util.StringConverter;
 import sample.Tablas.CuentasCobrar;
-import sample.model.Categoria;
-import sample.model.Conexion;
-import sample.model.FlujoEfectivo;
-import sample.model.Semana;
+import sample.model.*;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -146,10 +143,60 @@ public class MenuController {
 
     @FXML private ComboBox comboBoxClasificacion;
 
+    @FXML
+    private TextField textoMontoCuenta;
+
+    @FXML
+    private TextField textoRazon;
+
+    @FXML
+    private RadioButton radioPagar;
+
+    @FXML
+    private RadioButton radioCobrar;
+
+    @FXML
+    private TextField textoSmaCuentas;
+
+    @FXML
+    private TextField textoMontoBanco;
+
+    @FXML
+    private TextField textoDescripcion;
+
+    @FXML
+    private TextField textoSmaBanco;
+
+    @FXML private Label s1Utilidad;
+
+    @FXML private Label s2Utilidad;
+
+    @FXML private Label s3Utilidad;
+
+    @FXML private Label s4Utilidad;
+
+    @FXML private Label s5Utilidad;
+
+    @FXML private Label sfUtilidad;
+
+    @FXML private Label renta1;
+
+    @FXML private Label renta2;
+
+    @FXML private Label renta3;
+
+    @FXML private Label renta4;
+
+    @FXML private Label renta5;
+
+    @FXML private Label rentaF;
+
     String selecioncombo = "";
     String selectcombocategoria ="";
     ObservableList<Categoria> itemcategoriacombo = FXCollections.observableArrayList();
     String meses [] = {"enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"};
+    double dif1, dif2, dif3, dif4, dif5, diff;
+    String rentaS1 = "0.0", rentaS2 = "0.0", rentaS3 = "0.0", rentaS4 = "0.0", rentaS5 = "0.0", rentaSF = "0.0";
 
     Boolean auxwindowcombo = false;
     public void openWindowCategoria(){
@@ -296,8 +343,99 @@ public class MenuController {
 
     }
     public void cerrarGenerarReporteTabla(){
+        String rentabilidad [] = {rentaS1, rentaS2, rentaS3, rentaS4, rentaS5, rentaSF};
+        Double diferencia [] = {dif1, dif2, dif3, dif4, dif5, diff};
         GenerarReporteAnchor.setVisible(true);
         tablaReporte.setVisible(false);
+        tablaCuentaBancos.getItems().clear();
+        tablaCuentaGastos.getItems().clear();
+        tablaCuentaIngreso.getItems().clear();
+        tablaCuentaPagar.getItems().clear();
+        tablaCuentaCobrar.getItems().clear();
+        for (int i=0; i<5; i++){
+            diferencia[i] = 0.0;
+            rentabilidad[i] = "0.0";
+        }
+        rentaS2 = "0.0";
+        renta1.setText("0%"); renta2.setText("0%"); renta3.setText("0%"); renta4.setText("0%"); renta5.setText("0%"); rentaF.setText("0%");
+        s1Utilidad.setText("0.0"); s2Utilidad.setText("0.0"); s3Utilidad.setText("0.0"); s4Utilidad.setText("0.0"); s5Utilidad.setText("0.0"); sfUtilidad.setText("0.0");
+
+    }
+
+    @FXML
+    public void guardarBanco(){
+        Conexion conexion = new Conexion();
+        if (textoSmaBanco.getText().length()>0 && textoDescripcion.getText().length()>0 && textoMontoBanco.getText().length()>0){
+            int numSemana = Integer.parseInt(textoSmaBanco.getText());
+            String descripcion = textoDescripcion.getText();
+            Double monto = Double.parseDouble( textoMontoBanco.getText());
+            String tipo = "banco";
+             conexion.postIndicadores(tipo, numSemana, descripcion, monto, obtenerFecha());
+            textoSmaBanco.selectAll();
+            textoDescripcion.selectAll();
+            textoMontoBanco.selectAll();
+            Alert advertencia = new Alert(Alert.AlertType.INFORMATION);
+            advertencia.setTitle("Realizado");
+            advertencia.setHeaderText("Indicador guardado");
+            advertencia.show();
+        } else {
+            Alert advertencia = new Alert(Alert.AlertType.WARNING);
+            advertencia.setTitle("Faltan datos");
+            advertencia.setHeaderText("Llene todos los campos");
+            advertencia.show();
+        }
+    }
+
+    @FXML
+        public void guardarCuenta(){
+        Conexion conexion = new Conexion();
+        if(textoSmaCuentas.getText().length()>0 && textoRazon.getText().length()>0 && textoMontoCuenta.getText().length()>0 && (radioPagar.isSelected() == true || radioCobrar.isSelected() == true)){
+            int numSemana = Integer.parseInt(textoSmaCuentas.getText());
+            String razon = textoRazon.getText();
+            Double monto = Double.parseDouble(textoMontoCuenta.getText());
+            String tipo = "";
+            if (radioPagar.isSelected() == true){
+                tipo = "pagar";
+                radioPagar.setSelected(false);
+                bloquarRadioCobrar();
+            } else{
+                tipo = "cobrar";
+                radioCobrar.setSelected(false);
+                bloquarRadioCobrar();
+            }
+
+            conexion.postIndicadores(tipo, numSemana, razon, monto, obtenerFecha());
+            textoSmaCuentas.selectAll();
+            textoRazon.selectAll();
+            textoMontoCuenta.selectAll();
+            Alert advertencia = new Alert(Alert.AlertType.INFORMATION);
+            advertencia.setTitle("Realizado");
+            advertencia.setHeaderText("Indicador guardado");
+            advertencia.show();
+        } else {
+            Alert advertencia = new Alert(Alert.AlertType.WARNING);
+            advertencia.setTitle("Faltan datos");
+            advertencia.setHeaderText("Llene todos los campos");
+            advertencia.show();
+        }
+    }
+
+    @FXML
+    public void bloquarRadioCobrar(){
+        if (radioPagar.isSelected() == false){
+            radioCobrar.setDisable(false);
+        } else {
+            radioCobrar.setDisable(true);
+        }
+    }
+
+    @FXML
+    public void bloquarRadioPagar(){
+        if (radioCobrar.isSelected() == false){
+            radioPagar.setDisable(false);
+        } else {
+            radioPagar.setDisable(true);
+        }
     }
 
     @FXML private TableView<CuentasCobrar> tablaCuentaCobrar;
@@ -348,7 +486,7 @@ public class MenuController {
 
     @FXML private TableColumn finalIngresos;
 
-    @FXML private TableView<Semana> tablaCuentaGastos;
+    @FXML private TableView<CuentasCobrar> tablaCuentaGastos;
 
     @FXML private TableColumn colNombreG;
 
@@ -394,9 +532,16 @@ public class MenuController {
     public void llenarTabla(){
         System.out.println(comboMeses.getSelectionModel(). getSelectedItem());
         Conexion conexion = new Conexion();
-        Boolean axu = false;
+        Boolean axu = false, aux2 = false;
         ObservableList <Semana> listaReporte = conexion.generarPdf();
+        ObservableList <Indicadores> listaIndicadores = conexion.getIndicadores();
         String mes = comboMeses.getSelectionModel(). getSelectedItem();
+
+        for (int i=0; i<listaIndicadores.size(); i++){
+            if(listaIndicadores.get(i).getMes().equals(mes)){
+                aux2 = true;
+            }
+        }
 
         for (int i=0; i<listaReporte.size(); i++){
             if(listaReporte.get(i).getMes().equals(mes)) {
@@ -404,9 +549,9 @@ public class MenuController {
             }
         }
 
-        if (axu){
+        if (axu || aux2){
             cuentasCobrar = FXCollections.observableArrayList();
-            llenaDatosCeuntasPorCobrar();
+            llenaDatosCeuntasPorCobrar(listaIndicadores, mes);
             this.colNombre.setCellValueFactory(new PropertyValueFactory("nombre"));
             this.sem1.setCellValueFactory(new PropertyValueFactory("semana1"));
             this.sem2.setCellValueFactory(new PropertyValueFactory("semana2"));
@@ -416,7 +561,7 @@ public class MenuController {
             this.finalCobrar.setCellValueFactory(new PropertyValueFactory("Final"));
 
             cuentasPagar = FXCollections.observableArrayList();
-            llenaDatosCeuntasPorPagar();
+            llenaDatosCeuntasPorPagar(listaIndicadores, mes);
             this.colNombreP.setCellValueFactory(new PropertyValueFactory("nombre"));
             this.sem1P.setCellValueFactory(new PropertyValueFactory("semana1"));
             this.sem2P.setCellValueFactory(new PropertyValueFactory("semana2"));
@@ -436,7 +581,7 @@ public class MenuController {
             this.finalIngresos.setCellValueFactory(new PropertyValueFactory("Final"));
 
             cuentasGastos = FXCollections.observableArrayList();
-            llenaDatosGastos();
+            llenaDatosGastos(listaReporte, mes);
             this.colNombreG.setCellValueFactory(new PropertyValueFactory("nombre"));
             this.sem1G.setCellValueFactory(new PropertyValueFactory("semana1"));
             this.sem2G.setCellValueFactory(new PropertyValueFactory("semana2"));
@@ -446,7 +591,7 @@ public class MenuController {
             this.finalGastos.setCellValueFactory(new PropertyValueFactory("Final"));
 
             cuentasBancos = FXCollections.observableArrayList();
-            llenaDatosBancos();
+            llenaDatosBancos(listaIndicadores, mes);
             this.colNombreB.setCellValueFactory(new PropertyValueFactory("nombre"));
             this.sem1B.setCellValueFactory(new PropertyValueFactory("semana1"));
             this.sem2B.setCellValueFactory(new PropertyValueFactory("semana2"));
@@ -454,6 +599,40 @@ public class MenuController {
             this.sem4B.setCellValueFactory(new PropertyValueFactory("semana4"));
             this.colFinalB.setCellValueFactory(new PropertyValueFactory("semana5"));
             this.finalBanco.setCellValueFactory(new PropertyValueFactory("Final"));
+
+            Double aux = 0.0;
+            aux = dif1/Double.parseDouble(rentaS1)*100;
+            if (aux<1 || Double.parseDouble(rentaS1)<1){
+                aux = 0.0;
+            }
+            renta1.setText(aux+"%");
+            System.out.println("auxiliar: " + aux);
+            aux = dif2/Double.parseDouble(rentaS2)*100;
+            System.out.println("auxiliar: " + aux);
+            if (aux<1 || Double.parseDouble(rentaS2)<1){
+                aux = 0.0;
+            }
+            renta2.setText(aux+"%");
+            aux = dif3/Double.parseDouble(rentaS3)*100;
+            if (aux<1 || Double.parseDouble(rentaS3)<1){
+                aux = 0.0;
+            }
+            renta3.setText(aux+"%");
+            aux = dif4/Double.parseDouble(rentaS4)*100;
+            if (aux<1 || Double.parseDouble(rentaS4)<1){
+                aux = 0.0;
+            }
+            renta4.setText(aux+"%");
+            aux = dif5/Double.parseDouble(rentaS5)*100;
+            if (aux<1 || Double.parseDouble(rentaS5)<1){
+                aux = 0.0;
+            }
+            renta5.setText(aux+"%");
+            aux = diff/Double.parseDouble(rentaSF)*100;
+            if (aux<1 || Double.parseDouble(rentaSF)<1){
+                aux = 0.0;
+            }
+            rentaF.setText(aux+"%");
 
         } else {
             Alert advertencia = new Alert(Alert.AlertType.WARNING);
@@ -464,19 +643,130 @@ public class MenuController {
 
     }
 
-    public void llenaDatosCeuntasPorCobrar(){
-        for(int i=0; i<5; i++){
-            CuentasCobrar cuentasC = new CuentasCobrar("venta "+i,"9000","3500","0","1200","1200", "1200");
-            cuentasCobrar.add(cuentasC);
-            tablaCuentaCobrar.setItems(cuentasCobrar);
+    public void llenaDatosCeuntasPorCobrar(ObservableList<Indicadores> lista, String mes){
+
+        Boolean axu = false;
+        ArrayList <Indicadores> listaCobrar = new ArrayList<>();
+        for (int i=0; i<lista.size(); i++){
+            if(lista.get(i).getTipoCuenta().equals("cobrar") && lista.get(i).getMes().equals(mes)) {
+                listaCobrar.add(lista.get(i));
+                axu = true;
+            }
+        }
+
+        if(axu){
+            Double monto1 = 0.0, monto2 =0.0, monto3 =0.0, monto4 =0.0, monto5 =0.0;
+            ArrayList <String> auxList = new ArrayList<>();
+            for (int i=0; i<= listaCobrar.size(); i++){
+                String sema1 = "0.0", sema2 = "0.0", sema3 = "0.0", sema4 = "0.0", sema5 = "0.0", nameAux;
+                int auxNum=0;
+                Boolean aux2 = false;
+                if( i< listaCobrar.size()){
+                    nameAux = listaCobrar.get(i).getRazonSocial();
+                    for (int j=0; j<listaCobrar.size(); j++){
+                        if(listaCobrar.get(j).getRazonSocial().equals(nameAux)){
+                            switch (listaCobrar.get(j).getNoSemana()){
+                                case 1: sema1 = String.valueOf(listaCobrar.get(j).getMonto()); break;
+                                case 2: sema2 = String.valueOf(listaCobrar.get(j).getMonto()); break;
+                                case 3: sema3 = String.valueOf(listaCobrar.get(j).getMonto()); break;
+                                case 4: sema4 = String.valueOf(listaCobrar.get(j).getMonto()); break;
+                                case 5: sema5 = String.valueOf(listaCobrar.get(j).getMonto()); break;
+                            }
+                            auxNum = auxNum + 1;
+                        }
+                    }
+                    switch (listaCobrar.get(i).getNoSemana()){
+                        case 1: monto1 = monto1 + listaCobrar.get(i).getMonto(); break;
+                        case 2: monto2 = monto2 + listaCobrar.get(i).getMonto(); break;
+                        case 3: monto3 = monto3 + listaCobrar.get(i).getMonto(); break;
+                        case 4: monto4 = monto4 + listaCobrar.get(i).getMonto(); break;
+                        case 5: monto5 = monto5 + listaCobrar.get(i).getMonto(); break;
+                    }
+                    for (int h=0; h<auxList.size(); h++){
+                        if (nameAux.equals(auxList.get(h))){
+                            aux2 = true;
+                        }
+                    }
+                    if(!aux2){
+                        CuentasCobrar cuentasC = new CuentasCobrar(nameAux, sema1, sema2, sema3, sema4, sema5, sema5);
+                        cuentasCobrar.add(cuentasC);
+                        tablaCuentaCobrar.setItems(cuentasCobrar);
+                        auxList.add(nameAux);
+                    }
+                } else {
+                    CuentasCobrar cuentasC = new CuentasCobrar("Total: ", String.valueOf(monto1),  String.valueOf(monto2),  String.valueOf(monto3),  String.valueOf(monto4),  String.valueOf(monto5), String.valueOf(monto5));
+                    cuentasCobrar.add(cuentasC);
+                    tablaCuentaCobrar.setItems(cuentasCobrar);
+                }
+            }
+        } else {
+            Alert advertencia = new Alert(Alert.AlertType.WARNING);
+            advertencia.setTitle("Sin registros");
+            advertencia.setHeaderText("No hay registros de cuentas por Cobrar");
+            advertencia.show();
         }
     }
 
-    public void llenaDatosCeuntasPorPagar(){
-        for(int i=0; i<5; i++){
-            CuentasCobrar cuentasP = new CuentasCobrar("Prestamo "+i,"9000","3500","0","1200","1200", "1200");
-            cuentasPagar.add(cuentasP);
-            tablaCuentaPagar.setItems(cuentasPagar);
+    public void llenaDatosCeuntasPorPagar(ObservableList<Indicadores> lista, String mes){
+        Boolean axu = false;
+        ArrayList <Indicadores> listaPagar = new ArrayList<>();
+        for (int i=0; i<lista.size(); i++){
+            if(lista.get(i).getTipoCuenta().equals("pagar") && lista.get(i).getMes().equals(mes)) {
+                listaPagar.add(lista.get(i));
+                axu = true;
+            }
+        }
+
+        if(axu){
+            Double monto1 = 0.0, monto2 =0.0, monto3 =0.0, monto4 =0.0, monto5 =0.0;
+            ArrayList <String> auxList = new ArrayList<>();
+            for (int i=0; i<= listaPagar.size(); i++){
+                String sema1 = "0.0", sema2 = "0.0", sema3 = "0.0", sema4 = "0.0", sema5 = "0.0", nameAux;
+                int auxNum=0;
+                Boolean aux2 = false;
+                if( i< listaPagar.size()){
+                    nameAux = listaPagar.get(i).getRazonSocial();
+                    for (int j=0; j<listaPagar.size(); j++){
+                        if(listaPagar.get(j).getRazonSocial().equals(nameAux)){
+                            switch (listaPagar.get(j).getNoSemana()){
+                                case 1: sema1 = String.valueOf(listaPagar.get(j).getMonto()); break;
+                                case 2: sema2 = String.valueOf(listaPagar.get(j).getMonto()); break;
+                                case 3: sema3 = String.valueOf(listaPagar.get(j).getMonto()); break;
+                                case 4: sema4 = String.valueOf(listaPagar.get(j).getMonto()); break;
+                                case 5: sema5 = String.valueOf(listaPagar.get(j).getMonto()); break;
+                            }
+                            auxNum = auxNum + 1;
+                        }
+                    }
+                    switch (listaPagar.get(i).getNoSemana()){
+                        case 1: monto1 = monto1 + listaPagar.get(i).getMonto(); break;
+                        case 2: monto2 = monto2 + listaPagar.get(i).getMonto(); break;
+                        case 3: monto3 = monto3 + listaPagar.get(i).getMonto(); break;
+                        case 4: monto4 = monto4 + listaPagar.get(i).getMonto(); break;
+                        case 5: monto5 = monto5 + listaPagar.get(i).getMonto(); break;
+                    }
+                    for (int h=0; h<auxList.size(); h++){
+                        if (nameAux.equals(auxList.get(h))){
+                            aux2 = true;
+                        }
+                    }
+                    if(!aux2){
+                        CuentasCobrar cuentasP = new CuentasCobrar(nameAux, sema1, sema2, sema3, sema4, sema5, sema5);
+                        cuentasPagar.add(cuentasP);
+                        tablaCuentaPagar.setItems(cuentasPagar);
+                        auxList.add(nameAux);
+                    }
+                } else {
+                    CuentasCobrar cuentasP = new CuentasCobrar("Total: ", String.valueOf(monto1),  String.valueOf(monto2),  String.valueOf(monto3),  String.valueOf(monto4),  String.valueOf(monto5), String.valueOf(monto5));
+                    cuentasPagar.add(cuentasP);
+                    tablaCuentaPagar.setItems(cuentasPagar);
+                }
+            }
+        } else {
+            Alert advertencia = new Alert(Alert.AlertType.WARNING);
+            advertencia.setTitle("Sin registros");
+            advertencia.setHeaderText("No hay registros de cuentas por pagar");
+            advertencia.show();
         }
     }
 
@@ -487,7 +777,6 @@ public class MenuController {
             if(lista.get(i).getTipo().equals("entrada") && lista.get(i).getMes().equals(mes)) {
                 listaEntrada.add(lista.get(i));
                 axu = true;
-                System.out.println(lista.get(i).getDescripcion() + " descripcion:semana " + lista.get(i).getNumeroSemana());
             }
         }
 
@@ -520,14 +809,11 @@ public class MenuController {
                         case 5: monto5 = monto5 + listaEntrada.get(i).getMonto(); break;
                     }
                     for (int h=0; h<auxList.size(); h++){
-                        System.out.println(auxList.get(h));
                         if (nameAux.equals(auxList.get(h))){
-                            System.out.println("Entro:" + auxList.size());
                             aux2 = true;
                         }
                     }
                     if(!aux2){
-                        System.out.println("Hola: " + aux2);
                         CuentasCobrar cuentasI = new CuentasCobrar(nameAux, sema1, sema2, sema3, sema4, sema5, sema5);
                         cuentasIngresos.add(cuentasI);
                         tablaCuentaIngreso.setItems(cuentasIngresos);
@@ -535,9 +821,9 @@ public class MenuController {
                     }
                 } else {
                     CuentasCobrar cuentasI = new CuentasCobrar("Total: ", String.valueOf(monto1),  String.valueOf(monto2),  String.valueOf(monto3),  String.valueOf(monto4),  String.valueOf(monto5), String.valueOf(monto5));
+                    dif1=monto1; dif2=monto2; dif3=monto3; dif4=monto4; dif5=monto5; diff=monto5;
                     cuentasIngresos.add(cuentasI);
                     tablaCuentaIngreso.setItems(cuentasIngresos);
-                    System.out.println("ultima fila");
                 }
             }
         } else {
@@ -549,19 +835,139 @@ public class MenuController {
 
     }
 
-    public void llenaDatosGastos(){
-        for(int i=0; i<5; i++){
-            CuentasCobrar cuentasG = new CuentasCobrar("Operativos "+i,"9000","3500","0","1200","1200", "1200");
-            cuentasGastos.add(cuentasG);
-            //tablaCuentaGastos.setItems(cuentasGastos);
+    public void llenaDatosGastos(ObservableList<Semana> lista, String mes){
+
+        Boolean axu = false;
+        ArrayList <Semana> listaEntrada = new ArrayList<>();
+        for (int i=0; i<lista.size(); i++){
+            if(lista.get(i).getTipo().equals("salida") && lista.get(i).getMes().equals(mes)) {
+                listaEntrada.add(lista.get(i));
+                axu = true;
+            }
+        }
+
+        if(axu){
+            Double monto1 = 0.0, monto2 =0.0, monto3 =0.0, monto4 =0.0, monto5 =0.0;
+            ArrayList <String> auxList = new ArrayList<>();
+            for (int i=0; i<= listaEntrada.size(); i++){
+                String sema1 = "0.0", sema2 = "0.0", sema3 = "0.0", sema4 = "0.0", sema5 = "0.0", Final = "0.0", nameAux;
+                int auxNum=0;
+                Boolean aux2 = false;
+                if( i< listaEntrada.size()){
+                    nameAux = listaEntrada.get(i).getDescripcion();
+                    for (int j=0; j<listaEntrada.size(); j++){
+                        if(listaEntrada.get(j).getDescripcion().equals(nameAux)){
+                            switch (listaEntrada.get(j).getNumeroSemana()){
+                                case 1: sema1 = String.valueOf(listaEntrada.get(j).getMonto()); break;
+                                case 2: sema2 = String.valueOf(listaEntrada.get(j).getMonto()); break;
+                                case 3: sema3 = String.valueOf(listaEntrada.get(j).getMonto()); break;
+                                case 4: sema4 = String.valueOf(listaEntrada.get(j).getMonto()); break;
+                                case 5: sema5 = String.valueOf(listaEntrada.get(j).getMonto()); break;
+                            }
+                            auxNum = auxNum + 1;
+                        }
+                    }
+                    switch (listaEntrada.get(i).getNumeroSemana()){
+                        case 1: monto1 = monto1 + listaEntrada.get(i).getMonto(); break;
+                        case 2: monto2 = monto2 + listaEntrada.get(i).getMonto(); break;
+                        case 3: monto3 = monto3 + listaEntrada.get(i).getMonto(); break;
+                        case 4: monto4 = monto4 + listaEntrada.get(i).getMonto(); break;
+                        case 5: monto5 = monto5 + listaEntrada.get(i).getMonto(); break;
+                    }
+                    for (int h=0; h<auxList.size(); h++){
+                        System.out.println(auxList.get(h));
+                        if (nameAux.equals(auxList.get(h))){
+                            aux2 = true;
+                        }
+                    }
+                    if(!aux2){
+                        CuentasCobrar cuentasS = new CuentasCobrar(nameAux, sema1, sema2, sema3, sema4, sema5, sema5);
+                        cuentasGastos.add(cuentasS);
+                        tablaCuentaGastos.setItems(cuentasGastos);
+                        auxList.add(nameAux);
+                    }
+                } else {
+                    CuentasCobrar cuentasS = new CuentasCobrar("Total: ", String.valueOf(monto1),  String.valueOf(monto2),  String.valueOf(monto3),  String.valueOf(monto4),  String.valueOf(monto5), String.valueOf(monto5));
+                    rentaS1 = String.valueOf(dif1); rentaS2 = String.valueOf(dif2); rentaS3 = String.valueOf(dif3); rentaS4 = String.valueOf(dif4); rentaS5 = String.valueOf(dif5); rentaSF = String.valueOf(diff);
+                    dif1= dif1-monto1; dif2= dif2-monto2; dif3= dif3-monto3; dif4= dif4-monto4; dif5= dif5-monto5; diff= dif5-monto5;
+                    s1Utilidad.setText(String.valueOf(dif1));
+                    s2Utilidad.setText(String.valueOf(dif2));
+                    s3Utilidad.setText(String.valueOf(dif3));
+                    s4Utilidad.setText(String.valueOf(dif4));
+                    s5Utilidad.setText(String.valueOf(dif5));
+                    sfUtilidad.setText(String.valueOf(diff));
+                    cuentasGastos.add(cuentasS);
+                    tablaCuentaGastos.setItems(cuentasGastos);
+                }
+            }
+        } else {
+            Alert advertencia = new Alert(Alert.AlertType.WARNING);
+            advertencia.setTitle("Sin registros");
+            advertencia.setHeaderText("No hay registros de flujo de salida");
+            advertencia.show();
         }
     }
 
-    public void llenaDatosBancos(){
-        for(int i=0; i<5; i++){
-            CuentasCobrar cuentasB = new CuentasCobrar("Banco "+i,"9000","3500","0","1200","1200", "1200");
-            cuentasBancos.add(cuentasB);
-            tablaCuentaBancos.setItems(cuentasBancos);
+    public void llenaDatosBancos(ObservableList<Indicadores> lista, String mes){
+        Boolean axu = false;
+        ArrayList <Indicadores> listaBanco = new ArrayList<>();
+        for (int i=0; i<lista.size(); i++){
+            if(lista.get(i).getTipoCuenta().equals("banco") && lista.get(i).getMes().equals(mes)) {
+                listaBanco.add(lista.get(i));
+                axu = true;
+            }
+        }
+
+        if(axu){
+            Double monto1 = 0.0, monto2 =0.0, monto3 =0.0, monto4 =0.0, monto5 =0.0;
+            ArrayList <String> auxList = new ArrayList<>();
+            for (int i=0; i<= listaBanco.size(); i++){
+                String sema1 = "0.0", sema2 = "0.0", sema3 = "0.0", sema4 = "0.0", sema5 = "0.0", nameAux;
+                int auxNum=0;
+                Boolean aux2 = false;
+                if( i< listaBanco.size()){
+                    nameAux = listaBanco.get(i).getRazonSocial();
+                    for (int j=0; j<listaBanco.size(); j++){
+                        if(listaBanco.get(j).getRazonSocial().equals(nameAux)){
+                            switch (listaBanco.get(j).getNoSemana()){
+                                case 1: sema1 = String.valueOf(listaBanco.get(j).getMonto()); break;
+                                case 2: sema2 = String.valueOf(listaBanco.get(j).getMonto()); break;
+                                case 3: sema3 = String.valueOf(listaBanco.get(j).getMonto()); break;
+                                case 4: sema4 = String.valueOf(listaBanco.get(j).getMonto()); break;
+                                case 5: sema5 = String.valueOf(listaBanco.get(j).getMonto()); break;
+                            }
+                            auxNum = auxNum + 1;
+                        }
+                    }
+                    switch (listaBanco.get(i).getNoSemana()){
+                        case 1: monto1 = monto1 + listaBanco.get(i).getMonto(); break;
+                        case 2: monto2 = monto2 + listaBanco.get(i).getMonto(); break;
+                        case 3: monto3 = monto3 + listaBanco.get(i).getMonto(); break;
+                        case 4: monto4 = monto4 + listaBanco.get(i).getMonto(); break;
+                        case 5: monto5 = monto5 + listaBanco.get(i).getMonto(); break;
+                    }
+                    for (int h=0; h<auxList.size(); h++){
+                        if (nameAux.equals(auxList.get(h))){
+                            aux2 = true;
+                        }
+                    }
+                    if(!aux2){
+                        CuentasCobrar cuentasB = new CuentasCobrar(nameAux, sema1, sema2, sema3, sema4, sema5, sema5);
+                        cuentasBancos.add(cuentasB);
+                        tablaCuentaBancos.setItems(cuentasBancos);
+                        auxList.add(nameAux);
+                    }
+                } else {
+                    CuentasCobrar cuentasB = new CuentasCobrar("Total: ", String.valueOf(monto1),  String.valueOf(monto2),  String.valueOf(monto3),  String.valueOf(monto4),  String.valueOf(monto5), String.valueOf(monto5));
+                    cuentasBancos.add(cuentasB);
+                    tablaCuentaBancos.setItems(cuentasBancos);
+                }
+            }
+        } else {
+            Alert advertencia = new Alert(Alert.AlertType.WARNING);
+            advertencia.setTitle("Sin registros");
+            advertencia.setHeaderText("No hay registros de Bancos");
+            advertencia.show();
         }
     }
 
@@ -617,8 +1023,6 @@ public class MenuController {
             }
     }
 
-
-
     public void initComboClasificacion(){
         ObservableList<String> items = FXCollections.observableArrayList("GAO","Ingreso","Costo-Venta");
         comboBoxClasificacion.setItems(items);
@@ -626,11 +1030,5 @@ public class MenuController {
         System.out.println(t1);
         selecioncombo= t1;
     }
-
-
-
-
-
-
 
 }

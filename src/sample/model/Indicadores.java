@@ -12,6 +12,7 @@ public class Indicadores {
     private final StringProperty idIndicador = new SimpleStringProperty();
     private final DoubleProperty monto = new SimpleDoubleProperty();
     private String fecha;
+    private final StringProperty mes = new SimpleStringProperty();
 
     Indicadores(String tipoCuenta, Integer noSemana, String razonSocial, Double monto, String idIndicador,String fecha)
     {
@@ -21,6 +22,17 @@ public class Indicadores {
         this.monto.set(monto);
         this.idIndicador.set(idIndicador);
         this.fecha = fecha;
+    }
+
+    Indicadores(String tipoCuenta, Integer noSemana, String razonSocial, Double monto, String idIndicador,String fecha, String mes)
+    {
+        this.tipoCuenta.set(tipoCuenta);
+        this.noSemana.set(noSemana);
+        this.razonSocial.set(razonSocial);
+        this.monto.set(monto);
+        this.idIndicador.set(idIndicador);
+        this.fecha = fecha;
+        this.mes.set(mes);
     }
 
     public String getFecha() {
@@ -89,5 +101,21 @@ public class Indicadores {
 
     public void setMonto(double monto) {
         this.monto.set(monto);
+    }
+
+    public void setNoSemana(int noSemana) {
+        this.noSemana.set(noSemana);
+    }
+
+    public String getMes() {
+        return mes.get();
+    }
+
+    public StringProperty mesProperty() {
+        return mes;
+    }
+
+    public void setMes(String mes) {
+        this.mes.set(mes);
     }
 }

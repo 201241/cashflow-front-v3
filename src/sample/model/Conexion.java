@@ -100,9 +100,33 @@ public class Conexion {
         return itemflujo;
     }
 
+    public ObservableList<Indicadores> getIndicadores(){
+        ObservableList<Indicadores> itemIndicador = FXCollections.observableArrayList();
+        path = "indicadoresDinero/getIndicadores";
+        String enlace = _url+path;
+        JSONArray jsonArray = conexionAPIGET(enlace);
+        JSONObject jsonObject1 = jsonArray.getJSONObject(0);
+        if (jsonObject1.getString("find").equals("true")){
+            for (int i = 0; i < jsonObject1.getJSONArray("body").length() ; i++){
+                JSONObject jsonObject = jsonObject1.getJSONArray("body").getJSONObject(i);
+                String idIndicador = jsonObject.getString("idIndicadoresDinero");
+                String tipoIndicador = jsonObject.getString("tipoIndicador");
+                int numeroSemana = jsonObject.getInt("numeroSemana");
+                String razonSocial = jsonObject.getString("razonSocial");
+                Double monto = jsonObject.getDouble("monto");
+                String fecha = jsonObject.getString("fecha");
+                String mes = sacarmes(fecha);
+                Indicadores indidcador = new Indicadores(tipoIndicador, numeroSemana, razonSocial, monto, idIndicador, fecha, mes);
+                itemIndicador.add(indidcador);
+            }
+        }
+
+        return itemIndicador;
+    }
+
     public ObservableList<Semana> generarPdf(){
         ObservableList<Semana> itemsemna = FXCollections.observableArrayList();
-        path="getSemanaPDF/getSemana";
+        path="getSemanaPDF/getpdf";
         String enlace = _url+path;
         JSONArray jsonArray = conexionAPIGET(enlace);
         JSONObject jsonObject1 = jsonArray.getJSONObject(0);
@@ -149,8 +173,18 @@ public class Conexion {
 
         return conexionAPIPOST(enlace,jsonObject);
     }
-    public void postIndicadores(){
+    public void postIndicadores(String tipo, int numSemana, String razonSocial, Double monto, String fecha){
+        path = "indicadoresDinero/addIndicadores";
+        String enlace = _url+path;
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("mes", sacarmes(fecha));
+        jsonObject.put("tipoIndicador", tipo);
+        jsonObject.put("numeroSemana", numSemana);
+        jsonObject.put("razonSocial", razonSocial);
+        jsonObject.put("monto", monto);
+        jsonObject.put("fecha", fecha);
 
+        conexionAPIPOST(enlace, jsonObject);
     }
 
     public String sacarmes(String fecha){
