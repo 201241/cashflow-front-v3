@@ -232,31 +232,59 @@ public class Conexion {
         return response.toString();
     }
 
-    public void establecerConexion(String id,String clasificacion, String categoria, String subcategoria)
+    public String establecerConexion(String id,String clasificacion, String categoria, String subcategoria)
     {
+        System.out.println("holaaanmebe");
+        path = "categoria/updateCategoria";
+        String enlace = _url+path;
         JSONObject jsonCategoria = new JSONObject();
         jsonCategoria.put("idCategoria", id);
         jsonCategoria.put("clasificacion", clasificacion);
         jsonCategoria.put("categoria",categoria);
         jsonCategoria.put("subCategoria",subcategoria);
-
+        StringBuilder stringBuilder = new StringBuilder();
         try {
-            URL url = new URL("http://localhost:3005/categoria/updateCategoria");
-            HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
-            httpCon.setDoOutput(true);
-            httpCon.setRequestMethod("PUT");
-            byte[]x = jsonCategoria.toString().getBytes("UTF-8");
-            OutputStreamWriter out = new OutputStreamWriter(httpCon.getOutputStream());
-            out.write(String.valueOf(jsonCategoria));
+            URL url = new URL(enlace);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            byte[] x = jsonCategoria.toString().getBytes(StandardCharsets.UTF_8);
+            connection.setRequestProperty("Accept", "application/json");
+            connection.setRequestProperty("Content-Type", "application/json");
+            connection.setRequestMethod("PUT");
+            connection.setDoOutput(true);
+            OutputStreamWriter out = new OutputStreamWriter(connection.getOutputStream());
+            out.write(jsonCategoria.toString());
             out.close();
-            httpCon.getInputStream();
+            connection.getInputStream();
+//            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+//            String linea;
+//            while ((linea = bufferedReader.readLine()) != null){
+//                stringBuilder.append(linea);
+//            }
+            System.out.println("holaaaa");
+            System.out.println(stringBuilder.toString());
 
+        }catch (Exception e){
+            System.out.println(e);
+        }
+        return stringBuilder.toString();
 
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
+//        try {
+//            URL url = new URL("http://localhost:3005/categoria/updateCategoria");
+//            HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
+//            httpCon.setDoOutput(true);
+//            httpCon.setRequestMethod("PUT");
+//            byte[]x = jsonCategoria.toString().getBytes("UTF-8");
+//            OutputStreamWriter out = new OutputStreamWriter(httpCon.getOutputStream());
+//            out.write(String.valueOf(jsonCategoria));
+//            out.close();
+//            httpCon.getInputStream();
+//
+//
+//        }
+//        catch (Exception e)
+//        {
+//            e.printStackTrace();
+//        }
 
     }
 
