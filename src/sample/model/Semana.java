@@ -89,4 +89,12 @@ public class Semana {
     public void setTipo(String tipo) {
         this.tipo.set(tipo);
     }
+
+    public Categoria getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
+    }
 }

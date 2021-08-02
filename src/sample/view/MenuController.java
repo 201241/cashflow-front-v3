@@ -798,9 +798,9 @@ public class MenuController implements Initializable
                 Double Final2 = 0.0, sema1 = 0.0, sema2 = 0.0, sema3 = 0.0, sema4 = 0.0, sema5 = 0.0;
                 Boolean aux2 = false;
                 if( i< listaEntrada.size()){
-                    nameAux = listaEntrada.get(i).getDescripcion();
+                    nameAux = listaEntrada.get(i).getCategoria().getCategoria();
                     for (int j=0; j<listaEntrada.size(); j++){
-                        if(listaEntrada.get(j).getDescripcion().equals(nameAux)){
+                        if(listaEntrada.get(j).getCategoria().getCategoria().equals(nameAux)){
                             switch (listaEntrada.get(j).getNumeroSemana()){
                                 case 1: sema1 = sema1 + listaEntrada.get(j).getMonto(); /*String.valueOf(listaEntrada.get(j).getMonto());*/ break;
                                 case 2: sema2 = sema2 + listaEntrada.get(j).getMonto(); /*String.valueOf(listaEntrada.get(j).getMonto());*/ break;
@@ -861,19 +861,19 @@ public class MenuController implements Initializable
             Double monto1 = 0.0, monto2 =0.0, monto3 =0.0, monto4 =0.0, monto5 =0.0, Final = 0.0;
             ArrayList <String> auxList = new ArrayList<>();
             for (int i=0; i<= listaEntrada.size(); i++){
-                String sema1 = "0.0", sema2 = "0.0", sema3 = "0.0", sema4 = "0.0", sema5 = "0.0", nameAux;
-                Double Final2 = 0.0;
+                String sema1t = "0.0", sema2t = "0.0", sema3t = "0.0", sema4t = "0.0", sema5t = "0.0", nameAux;
+                Double Final2 = 0.0, sema1 = 0.0, sema2 = 0.0, sema3 = 0.0, sema4 = 0.0, sema5 = 0.0;
                 Boolean aux2 = false;
                 if( i< listaEntrada.size()){
-                    nameAux = listaEntrada.get(i).getDescripcion();
+                    nameAux = listaEntrada.get(i).getCategoria().getCategoria();
                     for (int j=0; j<listaEntrada.size(); j++){
-                        if(listaEntrada.get(j).getDescripcion().equals(nameAux)){
+                        if(listaEntrada.get(j).getCategoria().getCategoria().equals(nameAux)){
                             switch (listaEntrada.get(j).getNumeroSemana()){
-                                case 1: sema1 = String.valueOf(listaEntrada.get(j).getMonto()); break;
-                                case 2: sema2 = String.valueOf(listaEntrada.get(j).getMonto()); break;
-                                case 3: sema3 = String.valueOf(listaEntrada.get(j).getMonto()); break;
-                                case 4: sema4 = String.valueOf(listaEntrada.get(j).getMonto()); break;
-                                case 5: sema5 = String.valueOf(listaEntrada.get(j).getMonto()); break;
+                                case 1: sema1 = sema1 + listaEntrada.get(j).getMonto(); /*String.valueOf(listaEntrada.get(j).getMonto());*/ break;
+                                case 2: sema2 = sema2 + listaEntrada.get(j).getMonto(); /*String.valueOf(listaEntrada.get(j).getMonto());*/ break;
+                                case 3: sema3 = sema3 + listaEntrada.get(j).getMonto(); /*String.valueOf(listaEntrada.get(j).getMonto());*/ break;
+                                case 4: sema4 = sema4 + listaEntrada.get(j).getMonto(); /*String.valueOf(listaEntrada.get(j).getMonto());*/ break;
+                                case 5: sema5 = sema5 + listaEntrada.get(j).getMonto(); /*String.valueOf(listaEntrada.get(j).getMonto());*/ break;
                             }
                             Final2 = Final2 + listaEntrada.get(j).getMonto();
                         }
@@ -891,7 +891,7 @@ public class MenuController implements Initializable
                         }
                     }
                     if(!aux2){
-                        CuentasCobrar cuentasS = new CuentasCobrar(nameAux, sema1, sema2, sema3, sema4, sema5, String.valueOf(Math.round((Final2)*100.0)/100.0));
+                        CuentasCobrar cuentasS = new CuentasCobrar(nameAux, String.valueOf(Math.round((sema1)*100.0)/100.0), String.valueOf(Math.round((sema2)*100.0)/100.0), String.valueOf(Math.round((sema3)*100.0)/100.0), String.valueOf(Math.round((sema4)*100.0)/100.0), String.valueOf(Math.round((sema5)*100.0)/100.0), String.valueOf(Math.round((Final2)*100.0)/100.0));
                         Final = Math.round((Final + Final2)*100.0)/100.0;
                         cuentasGastos.add(cuentasS);
                         tablaCuentaGastos.setItems(cuentasGastos);
@@ -900,7 +900,25 @@ public class MenuController implements Initializable
                 } else {
                     CuentasCobrar cuentasS = new CuentasCobrar("Total: ", String.valueOf(monto1),  String.valueOf(monto2),  String.valueOf(monto3),  String.valueOf(monto4),  String.valueOf(monto5), String.valueOf(Final));
                     rentaS1 = String.valueOf(dif1); rentaS2 = String.valueOf(dif2); rentaS3 = String.valueOf(dif3); rentaS4 = String.valueOf(dif4); rentaS5 = String.valueOf(dif5); rentaSF = String.valueOf(diff);
-                    dif1= Math.round((dif1-monto1)*100.0)/100.0; dif2=  Math.round((dif2-monto2)*100.0)/100.0; dif3=  Math.round((dif3-monto3)*100.0)/100.0; dif4=  Math.round((dif4-monto4)*100.0)/100.0; dif5=  Math.round((dif5-monto5)*100.0)/100.0; diff= Math.round((dif5-monto5)*100.0)/100.0;
+                    Double aux1 = dif1, aux22 = dif2, aux3 = dif3, aux4 = dif4, aux5 = dif5, auxF = diff;
+                    dif1= Math.round((dif1-monto1)*100.0)/100.0;
+                    //if(dif1 == aux1){ dif1 = 0.0; }
+
+                    dif2=  Math.round((dif2-monto2)*100.0)/100.0;
+                    //if(dif2 == aux22){ dif2 = 0.0; }
+
+                    dif3=  Math.round((dif3-monto3)*100.0)/100.0;
+                    //if(dif3 == aux3){ dif3 = 0.0; }
+
+                    dif4=  Math.round((dif4-monto4)*100.0)/100.0;
+                    //if(dif4 == aux4){ dif4 = 0.0; }
+
+                    dif5=  Math.round((dif5-monto5)*100.0)/100.0;
+                    //if(dif5 == aux5){ dif5 = 0.0; }
+
+                    diff= Math.round((dif5-monto5)*100.0)/100.0;
+                    //if(diff == auxF){ diff = 0.0; }
+
                     s1Utilidad.setText(String.valueOf(dif1));
                     s2Utilidad.setText(String.valueOf(dif2));
                     s3Utilidad.setText(String.valueOf(dif3));
