@@ -227,7 +227,10 @@ public class MenuController implements Initializable
         colsubcategoria.setCellValueFactory(celldata -> celldata.getValue().subcategoriaProperty());
     }
 
-
+    @FXML
+    public void salir(){
+        System.exit(0);
+    }
 
     //flujo
     public void openWindowFlujo(){
