@@ -17,7 +17,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="550.0" prefWidth="730.0" style="-fx-background-color: #dae8ec;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.view.MenuController">
+<AnchorPane prefHeight="550.0" prefWidth="730.0" style="-fx-background-color: #dae8ec;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.view.MenuController">
     <children>
         <Button fx:id="buttoncategoria" layoutX="40.0" layoutY="415.0" mnemonicParsing="false" onAction="#openWindowCategoria" prefHeight="47.0" prefWidth="153.0" style="-fx-background-color: dodgerblue; -fx-background-radius: 10;" text="Categorias" textFill="WHITE">
             <font>
@@ -97,7 +97,7 @@
                <effect>
                   <DropShadow blurType="GAUSSIAN" height="27.07" radius="16.83" spread="0.42" width="42.25">
                      <color>
-                        <Color red="0.5299999713897705" green="0.6240000128746033" blue="1.0" opacity="0.41932204365730286" />
+                        <Color blue="1.0" green="0.6240000128746033" opacity="0.41932204365730286" red="0.5299999713897705" />
                      </color>
                   </DropShadow>
                </effect>
@@ -115,7 +115,7 @@
                      </font>
                   </Text>
                   <Polygon fx:id="combotriangulo" fill="#f4f4f4" layoutX="496.0" layoutY="227.0" points="-17.0, -49.0, 13.0, -49.0, -1.0, -61.0" stroke="#f4f4f4" strokeType="INSIDE" visible="false" />
-                  <Button layoutX="218.0" layoutY="327.0" mnemonicParsing="false" onAction="#agregarCategoriaDB" prefHeight="33.0" prefWidth="188.0" style="-fx-background-color: #256cdc;" text="Guardar" textFill="WHITE">
+                  <Button fx:id="guardarRegistro" layoutX="87.0" layoutY="328.0" mnemonicParsing="false" onAction="#agregarCategoriaDB" prefHeight="33.0" prefWidth="188.0" style="-fx-background-color: #256cdc; -fx-background-radius: 10;" text="Guardar" textFill="WHITE">
                      <font>
                         <Font name="Arial Bold" size="13.0" />
                      </font>
@@ -130,14 +130,24 @@
                         <Font name="Arial Bold" size="15.0" />
                      </font>
                   </Text>
-                  <Button layoutX="471.0" layoutY="395.0" mnemonicParsing="false" onAction="#cerrarCategoriaSub" onDragDetected="#cerrarCategoriaSub" prefHeight="33.0" prefWidth="102.0" style="-fx-background-color: #E55024;" text="Cerrar" textFill="WHITE">
+                  <Button layoutX="471.0" layoutY="395.0" mnemonicParsing="false" onAction="#cerrarCategoriaSub" onDragDetected="#cerrarCategoriaSub" prefHeight="33.0" prefWidth="102.0" style="-fx-background-color: #E55024; -fx-background-radius: 10;" text="Cerrar" textFill="WHITE">
                      <font>
                         <Font name="Arial Bold" size="13.0" />
                      </font>
                   </Button>
                   <ComboBox fx:id="comboBoxClasificacion" layoutX="422.0" layoutY="125.0" prefHeight="24.0" prefWidth="145.0" promptText="Opcion" />
+                  <Button fx:id="guardarEdicion" layoutX="471.0" layoutY="325.0" mnemonicParsing="false" onAction="#guardarEdit" prefHeight="39.0" prefWidth="102.0" style="-fx-background-color: lime; -fx-background-radius: 10;" text="Actualizar" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Button>
                </children>
             </AnchorPane>
+            <Button layoutX="635.0" layoutY="475.0" mnemonicParsing="false" onAction="#editar" prefHeight="35.0" prefWidth="63.0" style="-fx-background-color: lightgreen; -fx-background-radius: 10;" text="Editar" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Button>
             </children>
         </AnchorPane>
         <AnchorPane fx:id="windowflujo" layoutX="-3.0" layoutY="-2.0" prefHeight="550.0" prefWidth="730.0" style="-fx-background-color: #eceebf;" visible="false">

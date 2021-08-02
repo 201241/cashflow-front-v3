@@ -65,4 +65,7 @@ public class Categoria {
     public void setSubcategoria(String subcategoria) {
         this.subcategoria.set(subcategoria);
     }
+
+
+
 }

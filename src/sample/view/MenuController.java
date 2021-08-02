@@ -2,9 +2,12 @@ package sample.view;
 
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
@@ -15,13 +18,12 @@ import javafx.util.StringConverter;
 import sample.Tablas.CuentasCobrar;
 import sample.model.*;
 
+import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
-public class MenuController {
+public class MenuController implements Initializable
+{
 
     @FXML
     private Button btnflujo1;
@@ -983,7 +985,8 @@ public class MenuController {
         windowindicadores.setVisible(false);
     }
     public void openwindowsGuardarCategoria(){
-
+        guardarEdicion.setVisible(false);
+        guardarRegistro.setDisable(false);
         FadeTransition fadeTransition = new FadeTransition();
         fadeTransition.setDuration(Duration.millis(600));
         fadeTransition.setFromValue(0.0);
@@ -1037,4 +1040,55 @@ public class MenuController {
         selecioncombo= t1;
     }
 
+
+    @FXML
+    private Button guardarEdicion;
+
+    public void editar()
+    {
+        windowcategoriasub.setVisible(true);
+        guardarRegistro.setDisable(true);
+        guardarEdicion.setVisible(true);
+    }
+
+    String variableID;
+    public void guardarEdit()
+    {
+        Conexion con = new Conexion();
+        System.out.println("1n "+variableID + inputcategoria.getText() + inputsubcategoria.getText() + comboBoxClasificacion.getSelectionModel().getSelectedItem().toString());
+        con.establecerConexion(variableID, inputcategoria.getText(), inputsubcategoria.getText(),comboBoxClasificacion.getSelectionModel().getSelectedItem().toString());
+
+    }
+
+
+
+
+
+
+    public void gestionarEvenntos()
+    {
+        tablacategoria.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Categoria>() {
+            @Override
+            public void changed(ObservableValue<? extends Categoria> observableValue, Categoria anterior, Categoria actual) {
+                if (actual!=null)
+                {
+                    variableID = actual.getId();
+                    inputcategoria.setText(actual.getCategoria());
+                    inputsubcategoria.setText(actual.getSubcategoria());
+                    comboBoxClasificacion.setPromptText(actual.getClasificacion());
+                    comboBoxClasificacion.setValue(actual.getClasificacion());
+                    initComboClasificacion();
+                }
+            }
+        });
+
+
+    }
+    @FXML
+    private Button guardarRegistro;
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        gestionarEvenntos();
+    }
 }

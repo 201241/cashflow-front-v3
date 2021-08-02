@@ -6,6 +6,7 @@ import javafx.collections.ObservableList;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -230,4 +231,33 @@ public class Conexion {
         }
         return response.toString();
     }
+
+    public void establecerConexion(String id,String clasificacion, String categoria, String subcategoria)
+    {
+        JSONObject jsonCategoria = new JSONObject();
+        jsonCategoria.put("idCategoria", id);
+        jsonCategoria.put("clasificacion", clasificacion);
+        jsonCategoria.put("categoria",categoria);
+        jsonCategoria.put("subCategoria",subcategoria);
+
+        try {
+            URL url = new URL("http://localhost:3005/categoria/updateCategoria");
+            HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
+            httpCon.setDoOutput(true);
+            httpCon.setRequestMethod("PUT");
+            byte[]x = jsonCategoria.toString().getBytes("UTF-8");
+            OutputStreamWriter out = new OutputStreamWriter(httpCon.getOutputStream());
+            out.write(String.valueOf(jsonCategoria));
+            out.close();
+            httpCon.getInputStream();
+
+
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+    }
+
 }
