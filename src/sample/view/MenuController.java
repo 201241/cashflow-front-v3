@@ -820,12 +820,13 @@ public class MenuController {
                     }
                     if(!aux2){
                         CuentasCobrar cuentasI = new CuentasCobrar(nameAux, sema1, sema2, sema3, sema4, sema5, String.valueOf(Math.round((Final2)*100.0)/100.0));
+                        Final = Math.round((Final + Final2)*100.0)/100.0;
                         cuentasIngresos.add(cuentasI);
                         tablaCuentaIngreso.setItems(cuentasIngresos);
                         auxList.add(nameAux);
                     }
                 } else {
-                    CuentasCobrar cuentasI = new CuentasCobrar("Total: ", String.valueOf(monto1),  String.valueOf(monto2),  String.valueOf(monto3),  String.valueOf(monto4),  String.valueOf(monto5), String.valueOf(monto5));
+                    CuentasCobrar cuentasI = new CuentasCobrar("Total: ", String.valueOf(monto1),  String.valueOf(monto2),  String.valueOf(monto3),  String.valueOf(monto4),  String.valueOf(monto5), String.valueOf(Final));
                     dif1=monto1; dif2=monto2; dif3=monto3; dif4=monto4; dif5=monto5; diff=monto5;
                     cuentasIngresos.add(cuentasI);
                     tablaCuentaIngreso.setItems(cuentasIngresos);
@@ -872,7 +873,6 @@ public class MenuController {
                             Final2 = Final2 + listaEntrada.get(j).getMonto();
                         }
                     }
-                    System.out.println(Final2);
                     switch (listaEntrada.get(i).getNumeroSemana()){
                         case 1: monto1 = monto1 + listaEntrada.get(i).getMonto(); break;
                         case 2: monto2 = monto2 + listaEntrada.get(i).getMonto(); break;
@@ -887,6 +887,7 @@ public class MenuController {
                     }
                     if(!aux2){
                         CuentasCobrar cuentasS = new CuentasCobrar(nameAux, sema1, sema2, sema3, sema4, sema5, String.valueOf(Math.round((Final2)*100.0)/100.0));
+                        Final = Math.round((Final + Final2)*100.0)/100.0;
                         cuentasGastos.add(cuentasS);
                         tablaCuentaGastos.setItems(cuentasGastos);
                         auxList.add(nameAux);
