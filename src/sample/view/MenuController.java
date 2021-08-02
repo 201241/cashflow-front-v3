@@ -794,19 +794,19 @@ public class MenuController implements Initializable
             Double monto1 = 0.0, monto2 =0.0, monto3 =0.0, monto4 =0.0, monto5 =0.0, Final = 0.0;;
             ArrayList <String> auxList = new ArrayList<>();
             for (int i=0; i<= listaEntrada.size(); i++){
-                String sema1 = "0.0", sema2 = "0.0", sema3 = "0.0", sema4 = "0.0", sema5 = "0.0", nameAux;
-                Double Final2 = 0.0;
+                String sema1t = "0.0", sema2t = "0.0", sema3t = "0.0", sema4t = "0.0", sema5t = "0.0", nameAux;
+                Double Final2 = 0.0, sema1 = 0.0, sema2 = 0.0, sema3 = 0.0, sema4 = 0.0, sema5 = 0.0;
                 Boolean aux2 = false;
                 if( i< listaEntrada.size()){
                     nameAux = listaEntrada.get(i).getDescripcion();
                     for (int j=0; j<listaEntrada.size(); j++){
                         if(listaEntrada.get(j).getDescripcion().equals(nameAux)){
                             switch (listaEntrada.get(j).getNumeroSemana()){
-                                case 1: sema1 = String.valueOf(listaEntrada.get(j).getMonto()); break;
-                                case 2: sema2 = String.valueOf(listaEntrada.get(j).getMonto()); break;
-                                case 3: sema3 = String.valueOf(listaEntrada.get(j).getMonto()); break;
-                                case 4: sema4 = String.valueOf(listaEntrada.get(j).getMonto()); break;
-                                case 5: sema5 = String.valueOf(listaEntrada.get(j).getMonto()); break;
+                                case 1: sema1 = sema1 + listaEntrada.get(j).getMonto(); /*String.valueOf(listaEntrada.get(j).getMonto());*/ break;
+                                case 2: sema2 = sema2 + listaEntrada.get(j).getMonto(); /*String.valueOf(listaEntrada.get(j).getMonto());*/ break;
+                                case 3: sema3 = sema3 + listaEntrada.get(j).getMonto(); /*String.valueOf(listaEntrada.get(j).getMonto());*/ break;
+                                case 4: sema4 = sema4 + listaEntrada.get(j).getMonto(); /*String.valueOf(listaEntrada.get(j).getMonto());*/ break;
+                                case 5: sema5 = sema5 + listaEntrada.get(j).getMonto(); /*String.valueOf(listaEntrada.get(j).getMonto());*/ break;
                             }
                             Final2 = Final2 + listaEntrada.get(j).getMonto();
                         }
@@ -824,7 +824,7 @@ public class MenuController implements Initializable
                         }
                     }
                     if(!aux2){
-                        CuentasCobrar cuentasI = new CuentasCobrar(nameAux, sema1, sema2, sema3, sema4, sema5, String.valueOf(Math.round((Final2)*100.0)/100.0));
+                        CuentasCobrar cuentasI = new CuentasCobrar(nameAux, String.valueOf(Math.round((sema1)*100.0)/100.0), String.valueOf(Math.round((sema2)*100.0)/100.0), String.valueOf(Math.round((sema3)*100.0)/100.0), String.valueOf(Math.round((sema4)*100.0)/100.0), String.valueOf(Math.round((sema5)*100.0)/100.0), String.valueOf(Math.round((Final2)*100.0)/100.0));
                         Final = Math.round((Final + Final2)*100.0)/100.0;
                         cuentasIngresos.add(cuentasI);
                         tablaCuentaIngreso.setItems(cuentasIngresos);

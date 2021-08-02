@@ -10,14 +10,16 @@ public class Semana {
     private final DoubleProperty monto = new SimpleDoubleProperty();
     private final StringProperty mes =new SimpleStringProperty();
     private final StringProperty tipo =new SimpleStringProperty();
+    private Categoria categoria;
 
-    public Semana(String id,String descripcion, Integer numerosemana, Double monto, String mes, String tipo){
+    public Semana(String id,String descripcion, Integer numerosemana, Double monto, String mes, String tipo, Categoria categoria){
         this.id = id;
         this.descripcion.set(descripcion);
         this.numeroSemana.set(numerosemana);
         this.monto.set(monto);
         this.mes.set(mes);
         this.tipo.set(tipo);
+        this.categoria = categoria;
     }
 
     public String getId() {

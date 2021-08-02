@@ -140,8 +140,8 @@ public class Conexion {
                 Double monto = jsonObject.getDouble("monto");
                 String mes = jsonObject.getString("mes");
                 String tipo = jsonObject.getString("tipo");
-                Semana sem = new Semana(id,descripcion,numeroSemana,monto,mes,tipo);
-                itemsemna.add(sem);
+                //Semana sem = new Semana(id,descripcion,numeroSemana,monto,mes,tipo);
+                //itemsemna.add(sem);
             }
         }
 
