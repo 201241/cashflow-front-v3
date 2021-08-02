@@ -140,8 +140,13 @@ public class Conexion {
                 Double monto = jsonObject.getDouble("monto");
                 String mes = jsonObject.getString("mes");
                 String tipo = jsonObject.getString("tipo");
-                //Semana sem = new Semana(id,descripcion,numeroSemana,monto,mes,tipo);
-                //itemsemna.add(sem);
+                String idCategoria = jsonObject.getJSONObject("categorium").getString("idCategoria");
+                String clasificacion = jsonObject.getJSONObject("categorium").getString("clasificacion");
+                String categoria = jsonObject.getJSONObject("categorium").getString("categoria");
+                String subCategoria = jsonObject.getJSONObject("categorium").getString("subCategoria");
+                Categoria categoria1 = new Categoria(idCategoria,clasificacion,categoria,subCategoria);
+                Semana sem = new Semana(id,descripcion,numeroSemana,monto,mes,tipo,categoria1);
+                itemsemna.add(sem);
             }
         }
 
