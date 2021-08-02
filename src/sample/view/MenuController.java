@@ -601,42 +601,43 @@ public class MenuController {
             this.finalBanco.setCellValueFactory(new PropertyValueFactory("Final"));
 
             Double aux = 0.0;
+            long a = 0;
             aux = dif1/Double.parseDouble(rentaS1)*100;
-            aux = Math.floor(aux);
-            if (aux<1 || Double.parseDouble(rentaS1)<1){
-                aux = 0.0;
+            a = Math.round(aux);
+            if (a<1 || Double.parseDouble(rentaS1)<1){
+                a = 0;
             }
-            renta1.setText(aux+"%");
+            renta1.setText(a+"%");
             aux = dif2/Double.parseDouble(rentaS2)*100;
-            aux = Math.ceil(aux);
-            if (aux<1 || Double.parseDouble(rentaS2)<1){
-                aux = 0.0;
+            a = Math.round(aux);
+            if (a<1 || Double.parseDouble(rentaS2)<1){
+                a = 0;
             }
-            renta2.setText(aux+"%");
+            renta2.setText(a+"%");
             aux = dif3/Double.parseDouble(rentaS3)*100;
-            aux = Math.ceil(aux);
-            if (aux<1 || Double.parseDouble(rentaS3)<1){
-                aux = 0.0;
+            a = Math.round(aux);
+            if (a<1 || Double.parseDouble(rentaS3)<1){
+                a = 0;
             }
-            renta3.setText(aux+"%");
+            renta3.setText(a+"%");
             aux = dif4/Double.parseDouble(rentaS4)*100;
-            aux = Math.floor(aux);
-            if (aux<1 || Double.parseDouble(rentaS4)<1){
-                aux = 0.0;
+            a = Math.round(aux);
+            if (a<1 || Double.parseDouble(rentaS4)<1){
+                a = 0;
             }
-            renta4.setText(aux+"%");
+            renta4.setText(a+"%");
             aux = dif5/Double.parseDouble(rentaS5)*100;
-            aux = Math.ceil(aux);
-            if (aux<1 || Double.parseDouble(rentaS5)<1){
-                aux = 0.0;
+            a = Math.round(aux);
+            if (a<1 || Double.parseDouble(rentaS5)<1){
+                a = 0;
             }
-            renta5.setText(aux+"%");
+            renta5.setText(a+"%");
             aux = diff/Double.parseDouble(rentaSF)*100;
-            aux = Math.ceil(aux);
-            if (aux<1 || Double.parseDouble(rentaSF)<1){
-                aux = 0.0;
+            a = Math.round(aux);
+            if (a<1 || Double.parseDouble(rentaSF)<1){
+                a = 0;
             }
-            rentaF.setText(aux+"%");
+            rentaF.setText(a+"%");
 
         } else {
             Alert advertencia = new Alert(Alert.AlertType.WARNING);
