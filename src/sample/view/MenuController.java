@@ -401,7 +401,7 @@ public class MenuController {
             } else{
                 tipo = "cobrar";
                 radioCobrar.setSelected(false);
-                bloquarRadioCobrar();
+                bloquarRadioPagar();
             }
 
             conexion.postIndicadores(tipo, numSemana, razon, monto, obtenerFecha());
@@ -602,33 +602,37 @@ public class MenuController {
 
             Double aux = 0.0;
             aux = dif1/Double.parseDouble(rentaS1)*100;
+            aux = Math.floor(aux);
             if (aux<1 || Double.parseDouble(rentaS1)<1){
                 aux = 0.0;
             }
             renta1.setText(aux+"%");
-            System.out.println("auxiliar: " + aux);
             aux = dif2/Double.parseDouble(rentaS2)*100;
-            System.out.println("auxiliar: " + aux);
+            aux = Math.ceil(aux);
             if (aux<1 || Double.parseDouble(rentaS2)<1){
                 aux = 0.0;
             }
             renta2.setText(aux+"%");
             aux = dif3/Double.parseDouble(rentaS3)*100;
+            aux = Math.ceil(aux);
             if (aux<1 || Double.parseDouble(rentaS3)<1){
                 aux = 0.0;
             }
             renta3.setText(aux+"%");
             aux = dif4/Double.parseDouble(rentaS4)*100;
+            aux = Math.floor(aux);
             if (aux<1 || Double.parseDouble(rentaS4)<1){
                 aux = 0.0;
             }
             renta4.setText(aux+"%");
             aux = dif5/Double.parseDouble(rentaS5)*100;
+            aux = Math.ceil(aux);
             if (aux<1 || Double.parseDouble(rentaS5)<1){
                 aux = 0.0;
             }
             renta5.setText(aux+"%");
             aux = diff/Double.parseDouble(rentaSF)*100;
+            aux = Math.ceil(aux);
             if (aux<1 || Double.parseDouble(rentaSF)<1){
                 aux = 0.0;
             }
@@ -889,7 +893,7 @@ public class MenuController {
                 } else {
                     CuentasCobrar cuentasS = new CuentasCobrar("Total: ", String.valueOf(monto1),  String.valueOf(monto2),  String.valueOf(monto3),  String.valueOf(monto4),  String.valueOf(monto5), String.valueOf(monto5));
                     rentaS1 = String.valueOf(dif1); rentaS2 = String.valueOf(dif2); rentaS3 = String.valueOf(dif3); rentaS4 = String.valueOf(dif4); rentaS5 = String.valueOf(dif5); rentaSF = String.valueOf(diff);
-                    dif1= dif1-monto1; dif2= dif2-monto2; dif3= dif3-monto3; dif4= dif4-monto4; dif5= dif5-monto5; diff= dif5-monto5;
+                    dif1= Math.round((dif1-monto1)*100.0)/100.0; dif2=  Math.round((dif2-monto2)*100.0)/100.0; dif3=  Math.round((dif3-monto3)*100.0)/100.0; dif4=  Math.round((dif4-monto4)*100.0)/100.0; dif5=  Math.round((dif5-monto5)*100.0)/100.0; diff= Math.round((dif5-monto5)*100.0)/100.0;
                     s1Utilidad.setText(String.valueOf(dif1));
                     s2Utilidad.setText(String.valueOf(dif2));
                     s3Utilidad.setText(String.valueOf(dif3));
