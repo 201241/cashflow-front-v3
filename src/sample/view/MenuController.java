@@ -234,19 +234,34 @@ public class MenuController implements Initializable
 
     //flujo
     public void openWindowFlujo(){
-        initComboCategoria();
+        //initComboCategoria();
         windowflujo.setVisible(true);
         uploadDataTableFlujo();
         check1flujo.selectedProperty().addListener((observableValue, aBoolean, t1) -> {
             if (t1 == true){
+                initComboCategoria("entrada");
                 check2flujo.setSelected(false);
+            }
+            if(t1 == false && check2flujo.isSelected() == false){
+                combocategoria.getItems().clear();
+                combocategoria.setPromptText("Opcion");
             }
         });
         check2flujo.selectedProperty().addListener((observableValue, aBoolean, t1) -> {
             if (t1 ==true){
+                initComboCategoria("salida");
                 check1flujo.setSelected(false);
             }
+            if(t1 == false && check1flujo.isSelected() == false){
+                combocategoria.getItems().clear();
+                combocategoria.setPromptText("Opcion");
+            }
         });
+
+    }
+
+    @FXML
+    public void validacionFlujo(){
 
     }
 
@@ -267,10 +282,22 @@ public class MenuController implements Initializable
 
         }
     }
-    public void initComboCategoria(){
+    public void initComboCategoria(String tipoFlujo){
         Conexion conexion = new Conexion();
         itemcategoriacombo = conexion.getCategoria();
-        combocategoria.setItems(itemcategoriacombo);
+        ObservableList <Categoria> aux = FXCollections.observableArrayList();
+        for (Categoria ca:itemcategoriacombo){
+            if (tipoFlujo.equals("entrada")){
+                if (ca.getClasificacion().equals("Ingreso")){
+                    aux.add(ca);
+                }
+            } if (tipoFlujo.equals("salida")){
+                if (ca.getClasificacion().equals("Costo-Venta") || ca.getClasificacion().equals("GAO")){
+                    aux.add(ca);
+                }
+            }
+        }
+        combocategoria.setItems(aux);
         combocategoria.valueProperty().addListener((observableValue, categoria, t1) -> {
             selectcombocategoria = t1.getId();
 
@@ -796,9 +823,9 @@ public class MenuController implements Initializable
                 Double Final2 = 0.0, sema1 = 0.0, sema2 = 0.0, sema3 = 0.0, sema4 = 0.0, sema5 = 0.0;
                 Boolean aux2 = false;
                 if( i< listaEntrada.size()){
-                    nameAux = listaEntrada.get(i).getCategoria().getCategoria();
+                    nameAux = listaEntrada.get(i).getCategoria().getSubcategoria();
                     for (int j=0; j<listaEntrada.size(); j++){
-                        if(listaEntrada.get(j).getCategoria().getCategoria().equals(nameAux)){
+                        if(listaEntrada.get(j).getCategoria().getSubcategoria().equals(nameAux)){
                             switch (listaEntrada.get(j).getNumeroSemana()){
                                 case 1: sema1 = sema1 + listaEntrada.get(j).getMonto(); /*String.valueOf(listaEntrada.get(j).getMonto());*/ break;
                                 case 2: sema2 = sema2 + listaEntrada.get(j).getMonto(); /*String.valueOf(listaEntrada.get(j).getMonto());*/ break;
@@ -863,9 +890,9 @@ public class MenuController implements Initializable
                 Double Final2 = 0.0, sema1 = 0.0, sema2 = 0.0, sema3 = 0.0, sema4 = 0.0, sema5 = 0.0;
                 Boolean aux2 = false;
                 if( i< listaEntrada.size()){
-                    nameAux = listaEntrada.get(i).getCategoria().getCategoria();
+                    nameAux = listaEntrada.get(i).getCategoria().getSubcategoria();
                     for (int j=0; j<listaEntrada.size(); j++){
-                        if(listaEntrada.get(j).getCategoria().getCategoria().equals(nameAux)){
+                        if(listaEntrada.get(j).getCategoria().getSubcategoria().equals(nameAux)){
                             switch (listaEntrada.get(j).getNumeroSemana()){
                                 case 1: sema1 = sema1 + listaEntrada.get(j).getMonto(); /*String.valueOf(listaEntrada.get(j).getMonto());*/ break;
                                 case 2: sema2 = sema2 + listaEntrada.get(j).getMonto(); /*String.valueOf(listaEntrada.get(j).getMonto());*/ break;
