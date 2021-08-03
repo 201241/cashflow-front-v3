@@ -668,21 +668,20 @@ public class MenuController implements Initializable
             Double monto1 = 0.0, monto2 =0.0, monto3 =0.0, monto4 =0.0, monto5 =0.0;
             ArrayList <String> auxList = new ArrayList<>();
             for (int i=0; i<= listaCobrar.size(); i++){
-                String sema1 = "0.0", sema2 = "0.0", sema3 = "0.0", sema4 = "0.0", sema5 = "0.0", nameAux;
-                int auxNum=0;
+                String sema1t = "0.0", sema2t = "0.0", sema3t = "0.0", sema4t = "0.0", sema5t = "0.0", nameAux;
+                Double sema1 = 0.0, sema2 = 0.0, sema3 = 0.0, sema4 = 0.0, sema5 = 0.0;
                 Boolean aux2 = false;
                 if( i< listaCobrar.size()){
                     nameAux = listaCobrar.get(i).getRazonSocial();
                     for (int j=0; j<listaCobrar.size(); j++){
                         if(listaCobrar.get(j).getRazonSocial().equals(nameAux)){
                             switch (listaCobrar.get(j).getNoSemana()){
-                                case 1: sema1 = String.valueOf(listaCobrar.get(j).getMonto()); break;
-                                case 2: sema2 = String.valueOf(listaCobrar.get(j).getMonto()); break;
-                                case 3: sema3 = String.valueOf(listaCobrar.get(j).getMonto()); break;
-                                case 4: sema4 = String.valueOf(listaCobrar.get(j).getMonto()); break;
-                                case 5: sema5 = String.valueOf(listaCobrar.get(j).getMonto()); break;
+                                case 1: sema1 = sema1 + listaCobrar.get(j).getMonto(); break;
+                                case 2: sema2 = sema2 + listaCobrar.get(j).getMonto(); break;
+                                case 3: sema3 = sema3 + listaCobrar.get(j).getMonto(); break;
+                                case 4: sema4 = sema4 + listaCobrar.get(j).getMonto(); break;
+                                case 5: sema5 = sema5 + listaCobrar.get(j).getMonto(); break;
                             }
-                            auxNum = auxNum + 1;
                         }
                     }
                     switch (listaCobrar.get(i).getNoSemana()){
@@ -698,7 +697,7 @@ public class MenuController implements Initializable
                         }
                     }
                     if(!aux2){
-                        CuentasCobrar cuentasC = new CuentasCobrar(nameAux, sema1, sema2, sema3, sema4, sema5, sema5);
+                        CuentasCobrar cuentasC = new CuentasCobrar(nameAux, String.valueOf(Math.round((sema1)*100.0)/100.0), String.valueOf(Math.round((sema2)*100.0)/100.0), String.valueOf(Math.round((sema3)*100.0)/100.0), String.valueOf(Math.round((sema4)*100.0)/100.0), String.valueOf(Math.round((sema5)*100.0)/100.0), String.valueOf(Math.round((sema5)*100.0)/100.0));
                         cuentasCobrar.add(cuentasC);
                         tablaCuentaCobrar.setItems(cuentasCobrar);
                         auxList.add(nameAux);
@@ -731,21 +730,20 @@ public class MenuController implements Initializable
             Double monto1 = 0.0, monto2 =0.0, monto3 =0.0, monto4 =0.0, monto5 =0.0;
             ArrayList <String> auxList = new ArrayList<>();
             for (int i=0; i<= listaPagar.size(); i++){
-                String sema1 = "0.0", sema2 = "0.0", sema3 = "0.0", sema4 = "0.0", sema5 = "0.0", nameAux;
-                int auxNum=0;
+                String sema1t = "0.0", sema2t = "0.0", sema3t = "0.0", sema4t = "0.0", sema5t = "0.0", nameAux;
+                Double sema1 = 0.0, sema2 = 0.0, sema3 = 0.0, sema4 = 0.0, sema5 = 0.0;
                 Boolean aux2 = false;
                 if( i< listaPagar.size()){
                     nameAux = listaPagar.get(i).getRazonSocial();
                     for (int j=0; j<listaPagar.size(); j++){
                         if(listaPagar.get(j).getRazonSocial().equals(nameAux)){
                             switch (listaPagar.get(j).getNoSemana()){
-                                case 1: sema1 = String.valueOf(listaPagar.get(j).getMonto()); break;
-                                case 2: sema2 = String.valueOf(listaPagar.get(j).getMonto()); break;
-                                case 3: sema3 = String.valueOf(listaPagar.get(j).getMonto()); break;
-                                case 4: sema4 = String.valueOf(listaPagar.get(j).getMonto()); break;
-                                case 5: sema5 = String.valueOf(listaPagar.get(j).getMonto()); break;
+                                case 1: sema1 = sema1 + listaPagar.get(j).getMonto(); break;
+                                case 2: sema2 = sema2 + listaPagar.get(j).getMonto(); break;
+                                case 3: sema3 = sema3 + listaPagar.get(j).getMonto(); break;
+                                case 4: sema4 = sema4 + listaPagar.get(j).getMonto(); break;
+                                case 5: sema5 = sema5 + listaPagar.get(j).getMonto(); break;
                             }
-                            auxNum = auxNum + 1;
                         }
                     }
                     switch (listaPagar.get(i).getNoSemana()){
@@ -761,7 +759,7 @@ public class MenuController implements Initializable
                         }
                     }
                     if(!aux2){
-                        CuentasCobrar cuentasP = new CuentasCobrar(nameAux, sema1, sema2, sema3, sema4, sema5, sema5);
+                        CuentasCobrar cuentasP = new CuentasCobrar(nameAux, String.valueOf(Math.round((sema1)*100.0)/100.0), String.valueOf(Math.round((sema2)*100.0)/100.0), String.valueOf(Math.round((sema3)*100.0)/100.0), String.valueOf(Math.round((sema4)*100.0)/100.0), String.valueOf(Math.round((sema5)*100.0)/100.0), String.valueOf(Math.round((sema5)*100.0)/100.0));
                         cuentasPagar.add(cuentasP);
                         tablaCuentaPagar.setItems(cuentasPagar);
                         auxList.add(nameAux);
