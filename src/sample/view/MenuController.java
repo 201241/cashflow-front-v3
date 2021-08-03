@@ -305,7 +305,7 @@ public class MenuController implements Initializable
         combocategoria.setConverter(new StringConverter<Categoria>() {
             @Override
             public String toString(Categoria categoria) {
-                return categoria.getCategoria();
+                return categoria.getCategoria() + ": " + categoria.getSubcategoria();
             }
 
             @Override
